@@ -19,10 +19,16 @@ from blog import views as v
 urlpatterns = [
     path('adminx/', admin.site.urls),
 
+    # 初始化网站
+    path('start/', v.blog_start),
+
     # index页面
     path('', v.blog_index),
+
     # 后台管理
     path('admin/', v.blog_admin),
+    # 后台登陆
+    path('login/', v.blog_login),
 
     # 概要
     path('admin/admin-index/', v.admin_index),
@@ -45,6 +51,8 @@ urlpatterns = [
     path('admin/user-setup', v.user_setup),
     # 系统设置
     path('admin/system-setup', v.system_setup),
+
+    path('get-verify-code/', v.tool_get_verify_code),
 
 
 

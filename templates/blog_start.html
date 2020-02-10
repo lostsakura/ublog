@@ -1,0 +1,101 @@
+<!-- 导入基础文件 -->
+{% extends "admin_frame.html" %}
+
+<!-- body -->
+{% block body %}
+<body>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="card card-secondary">
+        <div class="card-header">
+          <h3 class="card-title">从今天开始使用ublog吧！</h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form role="form" id="blog-start-form">
+          <div class="card-body">
+
+            <div class="form-group">
+              <label for="user-email">邮箱</label>
+              <input type="email" class="form-control" id="user-email" name="userEmail" placeholder="输入您的邮箱">
+            </div>
+
+            <div class="form-group">
+              <label for="verify-code">验证码</label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="verify-code" name="verifyCode" placeholder="输入6位验证码">
+                <span class="input-group-append">
+                  <button type="button" class="btn btn-warning btn-flat" id="blog-start-get-verify-code">获取验证码</button>
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="user-password">密码</label>
+              <input type="password" class="form-control" name="userPassword" id="user-password" placeholder="输入您的密码">
+            </div>
+
+<!--            <div class="form-group">-->
+<!--              <label for="user-avatar">头像</label>-->
+<!--              <div class="input-group">-->
+<!--                <div class="custom-file">-->
+<!--                  <input type="file" class="custom-file-input" id="user-avatar">-->
+<!--                  <label class="custom-file-label" for="user-avatar">选择文件</label>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+
+            <div class="form-group">
+              <label for="site-name">站点名称</label>
+              <input type="text" class="form-control" id="site-name" name="siteName" placeholder="输入站点的名称"
+                     value="ublog">
+            </div>
+
+            <div class="form-group">
+              <label for="site-address">站点地址</label>
+              <input type="text" class="form-control" id="site-address" name="siteAddress" placeholder="输入站点的地址"
+                     value="http://u.blog">
+            </div>
+
+            <div class="form-group">
+              <label for="site-desc">站点描述</label>
+              <input type="text" class="form-control" id="site-desc" name="siteDesc" placeholder="输入站点的描述"
+                     value="Just So So...">
+            </div>
+
+            <div class="form-group">
+              <label for="site-keyword">站点关键词</label>
+              <input type="text" class="form-control" id="site-keyword" name="siteKeyword"
+                     placeholder="输入站点的关键词，关键词使用英文逗号分隔" value="blog">
+            </div>
+
+            <div class="form-group">
+              <label for="site-allow-comment">全站是否开启评论功能</label>
+              <select class="form-control" id="site-allow-comment" name="siteAllowComment">
+                <option value="0">禁用评论</option>
+                <option value="1">开启评论</option>
+              </select>
+            </div>
+
+          </div>
+          <!-- /.card-body -->
+
+          <div class="card-footer">
+            <button type="button" class="btn btn-primary float-right" id="blog-start-submit">提交</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+{% endblock %}
+
+<!-- 自定义Js -->
+{% block customizedJs %}
+<script src="/static/js/validation.js"></script>
+<script src="/static/js/pages/blog_start.js"></script>
+{% endblock %}

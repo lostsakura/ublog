@@ -10,8 +10,8 @@ class BlogSettings(models.Model):
     site_address = models.CharField(verbose_name='站点地址', default='http://u.blog', max_length=500)
     site_desc = models.CharField(verbose_name='站点描述', default='Just So So...', max_length=500)
     site_keyword = models.CharField(verbose_name='关键词', default='ublog', max_length=500)
-    allow_comment = models.CharField(verbose_name="隐私状态", choices=(("public", "公开"), ("private", "私有")),
-                                     max_length=20)
+    allow_comment = models.BooleanField(verbose_name="是否可以评论", choices=((False, "禁用评论"), (True, "启用评论")),
+                                        default=False)
 
     class Meta:
         verbose_name = "系统设置"

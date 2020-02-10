@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'blog.interceptor.StartInterceptor'
 ]
 
 ROOT_URLCONF = 'ublog.urls'
@@ -149,7 +150,14 @@ STATICFILES_DIRS = [
 # 生产环境下使用
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
-
 # 媒体文件
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+# 添加SMTP邮箱服务 帮助自动发邮件验证用户注册
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.126.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'ublog_admin@126.com'
+EMAIL_HOST_PASSWORD = 'qq282465134'
+EMAIL_FROM = 'ublog<ublog_admin@126.com>'
