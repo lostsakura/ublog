@@ -19,7 +19,7 @@ class StartInterceptor(MiddlewareMixin):
     @staticmethod
     def process_request(request):
         try:
-            blog_settings = BlogSettings.object.filter(id=1).order_by('id').first()
+            blog_settings = BlogSettings.objects.filter(id=1).order_by('id').first()
         except Exception as e:
             blog_settings = None
         if blog_settings is None:

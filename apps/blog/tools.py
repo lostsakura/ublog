@@ -15,7 +15,8 @@ def get_time_stamp(d_time):
 
 # 获取随机邮箱验证码
 def get_email_verify_record():
-    recode = str(random.randint(100000, 999999))
+    # recode = str(random.randint(100000, 999999))
+    recode = '123456'
     return recode
 
 
@@ -28,18 +29,20 @@ def send_verify_email(target_email):
     evr.code = code
     evr.email = target_email
     evr.save()
-    if send_mail(email_title, email_body, settings.EMAIL_FROM, [target_email]):
-        return True
-    return False
+    return True
+    # if send_mail(email_title, email_body, settings.EMAIL_FROM, [target_email]):
+    #     return True
+    # return False
 
 
 # 验证邮箱验证码
 def verify_email(email, code):
     try:
-        evr = EmailVerifyRecord.objects.filter(target_email=email).order_by('-id').first()
+        evr = EmailVerifyRecord.objects.filter(email=email).order_by('-id').first()
     except Exception as e:
         evr = None
     if evr:
+
         time_difference = get_time_stamp(datetime.datetime.now()) - get_time_stamp(evr.send_time)
         # 如果时间差超过10分钟，也同样验证失败
         if time_difference < 600:

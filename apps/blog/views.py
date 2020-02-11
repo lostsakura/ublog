@@ -1,6 +1,6 @@
+from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
-
+from django.shortcuts import render, redirect, render_to_response
 
 from blog.forms import BlogStartForm, EmailForm
 from blog.tools import send_verify_email, verify_email
@@ -10,6 +10,14 @@ from blog.models import BlogSettings, BlogUser
 
 
 def blog_start(request):
+    try:
+        blog_settings = BlogSettings.objects.filter(id=1).order_by('id').first()
+    except Exception as e:
+        blog_settings = None
+    # 初始化后禁止访问
+    if blog_settings is not None:
+        return forbidden(request)
+
     if request.method == 'GET':
         return render(request, 'blog_start.html')
     elif request.method == 'POST':
@@ -17,21 +25,25 @@ def blog_start(request):
         resp = {'status': None, 'info': None}
         blog_start_form = BlogStartForm(request.POST)
         if blog_start_form.is_valid():
-
-            # new_bu = BlogUser()
-            #
-            # new_bs = BlogSettings()
-            # new_bs.site_name = request.POST['siteName']
-            # new_bs.site_address = request.POST['siteAddress']
-            # new_bs.site_desc = request.POST['siteDesc']
-            # new_bs.site_keyword = request.POST['siteKeyword']
-            # new_bs.allow_comment = True if request.POST['siteAllowComment'] == 1 else False
-
+            if not verify_email(request.POST['userEmail'], request.POST['verifyCode']):
+                resp['status'] = 'error'
+                resp['info'] = '邮箱验证码不正确'
+                return JsonResponse(resp)
+            new_bu = BlogUser()
+            new_bu.email = request.POST['userEmail']
+            new_bu.password = make_password(request.POST['userPassword'])
+            new_bu.save()
+            new_bs = BlogSettings()
+            new_bs.site_name = request.POST['siteName']
+            new_bs.site_address = request.POST['siteAddress']
+            new_bs.site_desc = request.POST['siteDesc']
+            new_bs.site_keyword = request.POST['siteKeyword']
+            new_bs.allow_comment = True if request.POST['siteAllowComment'] == 1 else False
+            new_bs.save()
             resp['status'] = 'success'
-            resp['info'] = None
+            resp['info'] = '正在跳转至后台管理页面'
             return JsonResponse(resp)
         else:
-            reason = blog_start_form.errors.get_json_data()
             resp['status'] = 'error'
             resp['info'] = '验证没有通过'
             return JsonResponse(resp)
@@ -111,3 +123,31 @@ def tool_get_verify_code(request):
     resp['status'] = 'error'
     resp['info'] = '验证码发送失败'
     return JsonResponse(resp)
+
+
+# 403无权限访问
+def forbidden(request):
+    response = render_to_response('403.html', {})
+    response.status_code = 403
+    return response
+
+
+# 404找不到页面
+def page_not_found(request):
+    response = render_to_response('404.html', {})
+    response.status_code = 404
+    return response
+
+
+# 500服务器内部错误
+def internal_server_error(request):
+    response = render_to_response('500.html', {})
+    response.status_code = 500
+    return response
+
+
+# 503服务器出错
+def service_unavailable(request):
+    response = render_to_response('503.html', {})
+    response.status_code = 503
+    return response

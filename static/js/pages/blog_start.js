@@ -3,13 +3,6 @@
 // 获取邮箱验证码
 $('#blog-start-get-verify-code').click(function () {
 
-    const Toast = Swal.mixin({
-                  toast: true,
-                  position: 'top-end',
-                  showConfirmButton: false,
-                  timer: 3000
-                });
-
     // 局部验证 - 验证邮箱
     let is_valid = $('#blog-start-form').validate().element($('#user-email'));
     if (is_valid) {
@@ -18,15 +11,23 @@ $('#blog-start-get-verify-code').click(function () {
             userEmail: $('#user-email').val()
         }, function (data) {
             if (data['status'] === 'success') {
-                Toast.fire({
-                    type: 'success',
-                    title: '邮件验证码发送成功'
-                  })
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    icon: 'success',
+                    title: '验证码发送成功',
+                })
             } else if (data['status'] === 'error') {
-                Toast.fire({
-                    type: 'error',
-                    title: '邮件验证码发送失败'
-                  })
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    icon: 'error',
+                    title: '验证码发送失败',
+                })
             }
         });
     }
@@ -51,9 +52,9 @@ $("#blog-start-submit").click(function () {
             // 回调函数
             if (data['status'] === 'success') {
                 Swal.fire({
-                    position: 'center',
                     icon: 'success',
-                    title: '初始化成功，正在跳转至后台管理',
+                    title: '初始化成功',
+                    text: data['info'],
                     timer: 2000,
                     showConfirmButton: false,
                     onClose: () => {
@@ -66,8 +67,9 @@ $("#blog-start-submit").click(function () {
                     position: 'top-end',
                     showConfirmButton: false,
                     timer: 3000,
-                    type: 'error',
-                    title: '初始化失败，请检查相应的配置'
+                    icon: 'error',
+                    title: '初始化失败',
+                    text: data['info']
                 })
             }
         });
