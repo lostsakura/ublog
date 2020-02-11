@@ -29,6 +29,8 @@ urlpatterns = [
     path('admin/', v.blog_admin),
     # 后台登陆
     path('login/', v.blog_login),
+    # 账户注销
+    path('logout/', v.blog_logout),
 
     # 概要
     path('admin/admin-index/', v.admin_index),

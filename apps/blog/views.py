@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, render_to_response
@@ -94,13 +94,18 @@ def blog_login(request):
             return JsonResponse(resp)
         resp['status'] = 'error'
         resp['info'] = '登陆信息验证错误'
-        print(login_form.errors)
         return JsonResponse(resp)
 
 
 # 注销
 def blog_logout(request):
-    pass
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            logout(request)
+            request.session.flush()
+            resp = {'status': 'success'}
+            return JsonResponse(resp)
+    return forbidden(request)
 
 
 # 概要
