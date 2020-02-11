@@ -13,9 +13,9 @@
     <div class="card-body login-card-body">
       <p class="login-box-msg">开始记录你的生活吧！</p>
 
-      <form action="/login" method="post">
+      <form action="/login" method="post" id="blog-login-form">
         <div class="input-group mb-3">
-          <input type="email" class="form-control" name="user-email" placeholder="邮箱" required>
+          <input type="text" class="form-control" name="userName" id="user-name" placeholder="用户名" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" name="user-password" placeholder="密码" required>
+          <input type="password" class="form-control" name="userPassword" id="user-password" placeholder="密码" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -33,15 +33,15 @@
         <div class="row">
           <div class="col-8">
             <div class="icheck-primary">
-              <input type="checkbox" id="remember" name="remember-me">
-              <label for="remember">
+              <input type="checkbox" id="remember-me" name="rememberMe">
+              <label for="remember-me">
                 记住我
               </label>
             </div>
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">登录</button>
+            <button type="button" class="btn btn-primary btn-block" id="blog-login-submit">登录</button>
           </div>
           <!-- /.col -->
         </div>
@@ -64,4 +64,6 @@
 
 <!-- 自定义Js -->
 {% block customizedJs %}
+<script src="/static/js/validation.js"></script>
+<script src="/static/js/pages/blog_login.js"></script>
 {% endblock %}

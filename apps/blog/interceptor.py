@@ -22,15 +22,14 @@ class StartInterceptor(MiddlewareMixin):
     @staticmethod
     def process_request(request):
         try:
-            blog_settings = BlogSettings.objects.filter(id=1).order_by('id').first()
+            blog_settings = BlogSettings.objects.all().order_by('id').first()
         except Exception as e:
             blog_settings = None
         if blog_settings is None:
-            safe_path = request.path
-            if not safe_path == '/start/':
-                if not safe_path == '/get-verify-code/':
-                    if not safe_path == '/admin/':
-                        return redirect('/start/')
+            path = request.path
+            safe_list = ['/get-verify-code/', '/start/']
+            if path not in safe_list:
+                return redirect('/start/')
         return None
 
 

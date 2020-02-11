@@ -18,8 +18,9 @@ $.validator.addMethod(
     }
 );
 
-// blog_start
 $(document).ready(function () {
+
+    // blog_start
     $('#blog-start-form').validate({
         rules: {
             userEmail: {
@@ -34,6 +35,11 @@ $(document).ready(function () {
             verifyCode: {
                 required: true,
                 emailVerifyCode: true
+            },
+            userName: {
+                required: true,
+                minlength: 4,
+                maxlength: 20
             },
             siteName: {
                 required: true
@@ -58,6 +64,11 @@ $(document).ready(function () {
                 required: "密码不能为空",
                 minlength: "密码最小长度不能少于8位",
                 maxlength: "密码最大长度不能超过16位"
+            },
+            userName: {
+                required: "用户名不能为空",
+                minlength: "密码最小长度不能少于4位",
+                maxlength: "密码最大长度不能超过20位"
             },
             verifyCode: {
                 required: "验证码不能为空",
@@ -88,4 +99,46 @@ $(document).ready(function () {
           $(element).removeClass('is-invalid');
         }
     });
+
+
+    // blog_login
+    $('#blog-login-form').validate({
+        rules: {
+            userName: {
+                required: true,
+                minlength: 4,
+                maxlength: 20
+            },
+            userPassword: {
+                required: true,
+                minlength: 8,
+                maxlength: 16
+            }
+        },
+        messages: {
+            userName: {
+                required: "用户名不能为空",
+                minlength: "密码最小长度不能少于4位",
+                maxlength: "密码最大长度不能超过20位"
+            },
+            userPassword: {
+                required: "密码不能为空",
+                minlength: "密码最小长度不能少于8位",
+                maxlength: "密码最大长度不能超过16位"
+            }
+        },
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+          error.addClass('invalid-feedback');
+          element.closest('.form-group').append(error);
+        },
+        highlight: function (element, errorClass, validClass) {
+          $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+          $(element).removeClass('is-invalid');
+        }
+    });
 });
+
+

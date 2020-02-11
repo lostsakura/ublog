@@ -3,7 +3,7 @@ from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, render_to_response
 
-from blog.forms import BlogStartForm, EmailForm
+from blog.forms import BlogStartForm, EmailForm, LoginForm
 from blog.tools import send_verify_email, verify_email
 
 # 初始化网站
@@ -12,14 +12,15 @@ from blog.models import BlogSettings, BlogUser
 
 def blog_start(request):
     try:
-        blog_settings = BlogSettings.objects.filter(id=1).order_by('id').first()
+        blog_settings = BlogSettings.objects.all().order_by('-id').first()
     except Exception as e:
         blog_settings = None
     # 初始化后禁止访问
     if blog_settings is not None:
         return page_not_found(request)
     if request.method == 'GET':
-        return render(request, 'blog_start.html')
+        head_title = 'ublog初始化'
+        return render(request, 'blog_start.html', {'head_title': head_title})
     elif request.method == 'POST':
         # ajax返回的信息
         resp = {'status': None, 'info': None}
@@ -30,7 +31,7 @@ def blog_start(request):
                 resp['info'] = '邮箱验证码不正确'
                 return JsonResponse(resp)
             new_bu = BlogUser()
-            new_bu.username = 'admin'
+            new_bu.username = request.POST['userName']
             new_bu.email = request.POST['userEmail']
             new_bu.password = make_password(request.POST['userPassword'])
             new_bu.save()
@@ -44,12 +45,13 @@ def blog_start(request):
             resp['status'] = 'success'
             resp['info'] = '正在跳转至后台管理页面'
             # 自动登陆
-            user = authenticate(email=request.POST['userEmail'], password=request.POST['userPassword'])
+            user = authenticate(username=request.POST['userName'], password=request.POST['userPassword'])
             if user is not None:
                 login(request, user)
                 request.session.set_expiry(0)
             return JsonResponse(resp)
         else:
+            print(blog_start_form.errors)
             resp['status'] = 'error'
             resp['info'] = '验证没有通过'
             return JsonResponse(resp)
@@ -67,7 +69,38 @@ def blog_admin(request):
 
 # 登陆
 def blog_login(request):
-    return render(request, 'blog_login.html')
+    # ajax返回的信息
+    resp = {'status': None, 'info': None}
+    if request.user.is_authenticated:
+        return redirect('/admin/')
+    if request.method == 'GET':
+        return render(request, 'blog_login.html')
+    elif request.method == 'POST':
+        # ajax返回的信息
+        resp = {'status': None, 'info': None}
+        login_form = LoginForm(request.POST)
+        if login_form.is_valid():
+
+            user = authenticate(username=request.POST['userName'], password=request.POST['userPassword'])
+            if user is not None:
+                login(request, user)
+                if request.POST['rememberMe'] == '0':
+                    request.session.set_expiry(0)
+                resp['status'] = 'success'
+                resp['info'] = '正在跳转至后台管理页面'
+                return JsonResponse(resp)
+            resp['status'] = 'error'
+            resp['info'] = '邮箱或密码输入错误'
+            return JsonResponse(resp)
+        resp['status'] = 'error'
+        resp['info'] = '登陆信息验证错误'
+        print(login_form.errors)
+        return JsonResponse(resp)
+
+
+# 注销
+def blog_logout(request):
+    pass
 
 
 # 概要

@@ -43,6 +43,7 @@ $("#blog-start-submit").click(function () {
             userEmail: $('#user-email').val(),
             verifyCode: $('#verify-code').val(),
             userPassword: $('#user-password').val(),
+            userName: $('#user-name').val(),
             siteName: $('#site-name').val(),
             siteAddress: $('#site-address').val(),
             siteDesc: $('#site-desc').val(),

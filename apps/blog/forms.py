@@ -14,11 +14,12 @@ class BlogStartForm(forms.Form):
     userEmail = forms.EmailField(required=True)
     verifyCode = forms.CharField(required=True)
     userPassword = forms.CharField(required=True, max_length=16, min_length=8)
+    userName = forms.CharField(required=True, max_length=20, min_length=4)
     siteName = forms.CharField(required=True)
     siteAddress = forms.URLField()
     siteDesc = forms.CharField()
     siteKeyword = forms.CharField(required=True)
-    siteAllowComment = forms.MultipleChoiceField(required=True, choices=(('1', True), ('0', False)))
+    siteAllowComment = forms.ChoiceField(required=True, choices=(('1', True), ('0', False)))
 
     # 自定义验证
     def clean_verifyCode(self):
@@ -27,3 +28,10 @@ class BlogStartForm(forms.Form):
         if not ret:
             raise ValidationError('验证码格式不正确')
         return value
+
+
+# 登陆表单
+class LoginForm(forms.Form):
+    userEmail = forms.EmailField(required=True)
+    userPassword = forms.CharField(required=True, max_length=16, min_length=8)
+    rememberMe = forms.ChoiceField(required=True, choices=(('1', True), ('0', False)))

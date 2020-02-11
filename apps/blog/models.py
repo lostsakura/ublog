@@ -23,7 +23,6 @@ class BlogSettings(models.Model):
 
 # 用户model 继承内置的User，并添加新的字段
 class BlogUser(AbstractUser):
-    nick_name = models.CharField(verbose_name="昵称", max_length=50, default="未设置昵称", blank=True)
     avatar_image = models.ImageField(verbose_name='头像', upload_to="images/avatar_image%Y/%m",
                                      default="images/avatar_image/default.png")
 
