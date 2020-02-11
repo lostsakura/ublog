@@ -51,7 +51,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'blog.interceptor.StartInterceptor'
+    'blog.interceptor.StartInterceptor',
+    'blog.interceptor.PermissionInterceptor',
 ]
 
 ROOT_URLCONF = 'ublog.urls'

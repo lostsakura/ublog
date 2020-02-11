@@ -15,8 +15,7 @@ def get_time_stamp(d_time):
 
 # 获取随机邮箱验证码
 def get_email_verify_record():
-    # recode = str(random.randint(100000, 999999))
-    recode = '123456'
+    recode = str(random.randint(100000, 999999))
     return recode
 
 
@@ -29,10 +28,9 @@ def send_verify_email(target_email):
     evr.code = code
     evr.email = target_email
     evr.save()
-    return True
-    # if send_mail(email_title, email_body, settings.EMAIL_FROM, [target_email]):
-    #     return True
-    # return False
+    if send_mail(email_title, email_body, settings.EMAIL_FROM, [target_email]):
+        return True
+    return False
 
 
 # 验证邮箱验证码

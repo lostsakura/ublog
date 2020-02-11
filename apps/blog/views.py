@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, render_to_response
@@ -29,6 +30,7 @@ def blog_start(request):
                 resp['info'] = '邮箱验证码不正确'
                 return JsonResponse(resp)
             new_bu = BlogUser()
+            new_bu.username = 'admin'
             new_bu.email = request.POST['userEmail']
             new_bu.password = make_password(request.POST['userPassword'])
             new_bu.save()
@@ -41,6 +43,11 @@ def blog_start(request):
             new_bs.save()
             resp['status'] = 'success'
             resp['info'] = '正在跳转至后台管理页面'
+            # 自动登陆
+            user = authenticate(email=request.POST['userEmail'], password=request.POST['userPassword'])
+            if user is not None:
+                login(request, user)
+                request.session.set_expiry(0)
             return JsonResponse(resp)
         else:
             resp['status'] = 'error'

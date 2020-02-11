@@ -1,6 +1,9 @@
+import re
+
 from django.shortcuts import redirect
 
 from blog.models import BlogSettings
+from blog.views import forbidden
 
 try:
     from django.utils.deprecation import MiddlewareMixin
@@ -29,3 +32,18 @@ class StartInterceptor(MiddlewareMixin):
                     if not safe_path == '/admin/':
                         return redirect('/start/')
         return None
+
+
+"""
+访问后台管理系统时进行的权限认证
+"""
+
+
+class PermissionInterceptor(MiddlewareMixin):
+    @staticmethod
+    def process_request(request):
+        access_path = request.path
+        pattern = r'/admin/'
+        if re.match(pattern, access_path):
+            if not request.user.is_authenticated:
+                return forbidden(request)
