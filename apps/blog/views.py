@@ -71,8 +71,6 @@ def blog_admin(request):
 def blog_login(request):
     # ajax返回的信息
     resp = {'status': None, 'info': None}
-    if request.user.is_authenticated:
-        return redirect('/admin/')
     if request.method == 'GET':
         return render(request, 'blog_login.html')
     elif request.method == 'POST':
@@ -90,21 +88,28 @@ def blog_login(request):
                 resp['info'] = '正在跳转至后台管理页面'
                 return JsonResponse(resp)
             resp['status'] = 'error'
-            resp['info'] = '邮箱或密码输入错误'
+            resp['info'] = '用户名或密码输入错误'
             return JsonResponse(resp)
         resp['status'] = 'error'
         resp['info'] = '登陆信息验证错误'
         return JsonResponse(resp)
 
 
+# 找回密码
+def recover_password(request):
+    if request.method == 'GET':
+        return render(request, 'recover_password.html')
+    elif request.method == 'POST':
+        pass
+
+
 # 注销
 def blog_logout(request):
     if request.method == 'POST':
-        if request.user.is_authenticated:
-            logout(request)
-            request.session.flush()
-            resp = {'status': 'success'}
-            return JsonResponse(resp)
+        logout(request)
+        request.session.flush()
+        resp = {'status': 'success'}
+        return JsonResponse(resp)
     return forbidden(request)
 
 

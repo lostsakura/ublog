@@ -32,6 +32,6 @@ class BlogStartForm(forms.Form):
 
 # 登陆表单
 class LoginForm(forms.Form):
-    userEmail = forms.EmailField(required=True)
+    userName = forms.CharField(required=True, max_length=20, min_length=4)
     userPassword = forms.CharField(required=True, max_length=16, min_length=8)
     rememberMe = forms.ChoiceField(required=True, choices=(('1', True), ('0', False)))

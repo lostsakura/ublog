@@ -42,7 +42,18 @@ class PermissionInterceptor(MiddlewareMixin):
     @staticmethod
     def process_request(request):
         access_path = request.path
-        pattern = r'/admin/'
-        if re.match(pattern, access_path):
-            if not request.user.is_authenticated:
+        if not request.user.is_authenticated:
+            # 没有登陆时禁用admin及其相关页面
+            pattern = r'/admin/'
+            if re.match(pattern, access_path):
                 return forbidden(request)
+            # 用户没有登陆的禁用名单
+            forbid_list = ['/logout']
+            if access_path in forbid_list:
+                return forbidden(request)
+        else:
+            # 用户登录后的禁用地址
+            forbid_list = ['/forgot-password/', '/login/']
+            if access_path in forbid_list:
+                return forbidden(request)
+

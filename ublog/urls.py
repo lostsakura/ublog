@@ -31,6 +31,8 @@ urlpatterns = [
     path('login/', v.blog_login),
     # 账户注销
     path('logout/', v.blog_logout),
+    # 找回密码
+    path('forgot-password/', v.recover_password),
 
     # 概要
     path('admin/admin-index/', v.admin_index),
