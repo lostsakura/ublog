@@ -47,6 +47,8 @@ def verify_email(email, code):
         # 如果时间差超过10分钟，也同样验证失败
         if time_difference < 600:
             if code == evr.code:
+                # 验证成功后，删除验证码
+                evr.delete()
                 return True
     return False
 

@@ -52,8 +52,6 @@ urlpatterns = [
     # 系统设置
     path('admin/system-setup', v.system_setup),
 
+    # 获取邮箱验证码
     path('get-verify-code/', v.tool_get_verify_code),
-
-
-
 ]

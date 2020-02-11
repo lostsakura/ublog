@@ -16,8 +16,7 @@ def blog_start(request):
         blog_settings = None
     # 初始化后禁止访问
     if blog_settings is not None:
-        return forbidden(request)
-
+        return page_not_found(request)
     if request.method == 'GET':
         return render(request, 'blog_start.html')
     elif request.method == 'POST':
@@ -127,27 +126,31 @@ def tool_get_verify_code(request):
 
 # 403无权限访问
 def forbidden(request):
-    response = render_to_response('403.html', {})
+    response = render_to_response('error_page.html', {'head_title': '403 - ublog', 'type': '403',
+                                                      'msg': '您无权访问该页面'})
     response.status_code = 403
     return response
 
 
 # 404找不到页面
 def page_not_found(request):
-    response = render_to_response('404.html', {})
+    response = render_to_response('error_page.html', {'head_title': '404 - ublog', 'type': '404',
+                                                      'msg': '找不到该页面'})
     response.status_code = 404
     return response
 
 
 # 500服务器内部错误
 def internal_server_error(request):
-    response = render_to_response('500.html', {})
+    response = render_to_response('error_page.html', {'head_title': '500 - ublog', 'type': '500',
+                                                      'msg': '抱歉，服务器内部错误'})
     response.status_code = 500
     return response
 
 
 # 503服务器出错
 def service_unavailable(request):
-    response = render_to_response('503.html', {})
+    response = render_to_response('error_page.html', {'head_title': '503 - ublog', 'type': '503',
+                                                      'msg': '抱歉，服务器出错'})
     response.status_code = 503
     return response

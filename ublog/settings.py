@@ -128,13 +128,13 @@ USE_TZ = False
 
 # 403 404 500 503
 # 没有访问权限
-# handler403 = 'main_site.views.forbidden'
+handler403 = 'main_site.views.forbidden'
 # 找不到页面
-# handler404 = 'main_site.views.page_not_found'
+handler404 = 'main_site.views.page_not_found'
 # 服务器内部错误
-# handler500 = 'main_site.views.internal_server_error'
+handler500 = 'main_site.views.internal_server_error'
 # 服务器出错
-# handler503 = 'main_site.views.service_unavailable'
+handler503 = 'main_site.views.service_unavailable'
 
 
 # Static files (CSS, JavaScript, Images)
