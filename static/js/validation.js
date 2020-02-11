@@ -18,6 +18,20 @@ $.validator.addMethod(
     }
 );
 
+// 添加确认密码的验证规则
+$.validator.addMethod(
+    'confirmPassword',
+    function (value, element, params) {
+        if (params) {
+            if (value === $('#' + params).val()) {
+                return true
+            } else {
+                return false
+            }
+        }
+    }
+);
+
 $(document).ready(function () {
 
     // blog_start
@@ -125,6 +139,64 @@ $(document).ready(function () {
                 required: "密码不能为空",
                 minlength: "密码最小长度不能少于8位",
                 maxlength: "密码最大长度不能超过16位"
+            }
+        },
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+          error.addClass('invalid-feedback');
+          element.closest('.form-group').append(error);
+        },
+        highlight: function (element, errorClass, validClass) {
+          $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+          $(element).removeClass('is-invalid');
+        }
+    });
+
+
+    // forgot_password
+    $('#forgot-password-form').validate({
+        rules: {
+            userEmail: {
+                required: true,
+                email: true
+            },
+            verifyCode: {
+                required: true,
+                emailVerifyCode: true
+            },
+            newPassword: {
+                required: true,
+                minlength: 8,
+                maxlength: 16
+            },
+            confirmNewPassword: {
+                required: true,
+                minlength: 8,
+                maxlength: 16,
+                confirmPassword: 'new-password'
+            }
+        },
+        messages: {
+            userEmail: {
+                required: "邮箱不能为空",
+                email: "请输入格式正确的邮箱"
+            },
+            verifyCode: {
+                required: "验证码不能为空",
+                emailVerifyCode: "请输入格式正确的验证码"
+            },
+            newPassword: {
+                required: "密码不能为空",
+                minlength: "密码最小长度不能少于8位",
+                maxlength: "密码最大长度不能超过16位"
+            },
+            confirmNewPassword: {
+                required: "密码不能为空",
+                minlength: "密码最小长度不能少于8位",
+                maxlength: "密码最大长度不能超过16位",
+                confirmPassword: "密码不一致"
             }
         },
         errorElement: 'span',

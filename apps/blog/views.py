@@ -3,7 +3,7 @@ from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, render_to_response
 
-from blog.forms import BlogStartForm, EmailForm, LoginForm
+from blog.forms import BlogStartForm, EmailForm, LoginForm, RecoverPasswordForm
 from blog.tools import send_verify_email, verify_email
 
 # 初始化网站
@@ -78,7 +78,6 @@ def blog_login(request):
         resp = {'status': None, 'info': None}
         login_form = LoginForm(request.POST)
         if login_form.is_valid():
-
             user = authenticate(username=request.POST['userName'], password=request.POST['userPassword'])
             if user is not None:
                 login(request, user)
@@ -100,7 +99,32 @@ def recover_password(request):
     if request.method == 'GET':
         return render(request, 'recover_password.html')
     elif request.method == 'POST':
-        pass
+        resp = {'status': None, 'info': None}
+        rpf = RecoverPasswordForm(request.POST)
+        if rpf.is_valid():
+            if not verify_email(request.POST['userEmail'], request.POST['verifyCode']):
+                resp['status'] = 'error'
+                resp['info'] = '邮箱验证码不正确'
+                return JsonResponse(resp)
+            else:
+                try:
+                    user = BlogUser.objects.filter(email=request.POST['userEmail']).order_by('-id').first()
+                except Exception as e:
+                    user = None
+                if user:
+                    user.password = make_password(request.POST['newPassword'])
+                    user.save()
+                    resp['status'] = 'success'
+                    resp['info'] = '您的用户名为 【' + user.username + '】'
+                    return JsonResponse(resp)
+                else:
+                    resp['status'] = 'error'
+                    resp['info'] = '您的邮箱信息不正确，请检查后重试'
+                    return JsonResponse(resp)
+        else:
+            resp['status'] = 'error'
+            resp['info'] = '表单信息提交异常，请检查后重试'
+            return JsonResponse(resp)
 
 
 # 注销
@@ -164,8 +188,16 @@ def tool_get_verify_code(request):
     if request.method == 'POST':
         email_form = EmailForm(request.POST)
         if email_form.is_valid():
-            email = request.POST['userEmail']
-            if send_verify_email(email):
+            if request.POST['type'] == '1':
+                try:
+                    exist_user = BlogUser.objects.filter(email=request.POST['userEmail']).first()
+                except Exception as e:
+                    exist_user = None
+                if not exist_user:
+                    resp['status'] = 'error'
+                    resp['info'] = '该用户不存在'
+                    return JsonResponse(resp)
+            if send_verify_email(request.POST['userEmail']):
                 resp['status'] = 'success'
                 resp['info'] = '验证码发送成功'
                 return JsonResponse(resp)

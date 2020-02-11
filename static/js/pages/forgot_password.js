@@ -1,14 +1,12 @@
 "use strict";
 
-// 获取邮箱验证码
-$('#blog-start-get-verify-code').click(function () {
-
-    // 局部验证 - 验证邮箱
-    let is_valid = $('#blog-start-form').validate().element($('#user-email'));
+// 获取验证码
+$('#forgot-password-get-verify-code').click(function () {
+    let is_valid = $('#forgot-password-form').validate().element($('#user-email'));
     if (is_valid) {
         $.post('/get-verify-code/', {
             userEmail: $('#user-email').val(),
-            type: '0'
+            type: '1'
         }, function (data) {
             if (data['status'] === 'success') {
                 Swal.fire({
@@ -17,7 +15,7 @@ $('#blog-start-get-verify-code').click(function () {
                     showConfirmButton: false,
                     timer: 3000,
                     icon: 'success',
-                    title: '验证码发送成功',
+                    title: data['info']
                 })
             } else if (data['status'] === 'error') {
                 Swal.fire({
@@ -26,42 +24,31 @@ $('#blog-start-get-verify-code').click(function () {
                     showConfirmButton: false,
                     timer: 3000,
                     icon: 'error',
-                    title: '验证码发送失败',
+                    title: data['info']
                 })
             }
         });
     }
 });
 
-
-// 表单提交
-$("#blog-start-submit").click(function () {
-    // 验证表单
-    let is_valid = $('#blog-start-form').valid();
+// 提交重置密码表单
+$('#forgot-password-submit').click(function () {
+    let is_valid = $('#forgot-password-form').valid();
     if (is_valid) {
-        $.post('/start/', {
+        $.post('/forgot-password/', {
             userEmail: $('#user-email').val(),
             verifyCode: $('#verify-code').val(),
-            userPassword: $('#user-password').val(),
-            userName: $('#user-name').val(),
-            siteName: $('#site-name').val(),
-            siteAddress: $('#site-address').val(),
-            siteDesc: $('#site-desc').val(),
-            siteKeyword: $('#site-keyword').val(),
-            siteAllowComment: $('#site-allow-comment').val()
+            newPassword: $('#confirm-new-password').val()
         }, function (data) {
-            // 回调函数
             if (data['status'] === 'success') {
                 Swal.fire({
                     icon: 'success',
-                    title: '初始化成功',
+                    title: '重置密码成功',
                     text: data['info'],
-                    timer: 2000,
-                    showConfirmButton: false,
                     onClose: () => {
-                        $(window).attr('location','/admin/');
+                        $(window).attr('location','/login/');
                     }
-                });
+                })
             } else if (data['status'] === 'error') {
                 Swal.fire({
                     toast: true,
@@ -69,8 +56,7 @@ $("#blog-start-submit").click(function () {
                     showConfirmButton: false,
                     timer: 3000,
                     icon: 'error',
-                    title: '初始化失败',
-                    text: data['info']
+                    title: data['info']
                 })
             }
         });
