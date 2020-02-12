@@ -5,7 +5,7 @@ import random
 from django.core.mail import send_mail
 from django.conf import settings
 
-from blog.models import EmailVerifyRecord
+from blog.models import EmailVerifyRecord, BlogSettings
 
 
 # 转换以秒为单位的时间戳
@@ -21,15 +21,17 @@ def get_email_verify_record():
 
 # 发送邮箱验证码
 def send_verify_email(target_email):
+    # 清空之前的验证码
+    EmailVerifyRecord.objects.filter(email=target_email).delete()
     email_title = "ublog - 验证码"
     code = get_email_verify_record()
     email_body = "您本次的验证码为：" + code + "。请在10分钟内验证，过期失效。"
     evr = EmailVerifyRecord()
     # evr.code = code
-    evr.code = '123456'
+    evr.code = '123456' #
     evr.email = target_email
     evr.save()
-    return True
+    return True #
     # if send_mail(email_title, email_body, settings.EMAIL_FROM, [target_email]):
     #     return True
     # return False
@@ -51,5 +53,14 @@ def verify_email(email, code):
                 evr.delete()
                 return True
     return False
+
+
+# 获取head_title
+def get_blog_settings():
+    try:
+        blog_settings = BlogSettings.objects.all().order_by('id').first()
+    except Exception as e:
+        blog_settings = None
+    return blog_settings
 
 

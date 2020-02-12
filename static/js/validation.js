@@ -7,7 +7,7 @@
 // 添加自定义jquery-validator验证规则
 $.validator.addMethod(
     'emailVerifyCode',
-    function (value, element, params) {
+    (value, element, params) => {
         if (params) {
             let flag = true;
             // 正则校验 右键验证码是否为6位数字
@@ -21,7 +21,7 @@ $.validator.addMethod(
 // 添加确认密码的验证规则
 $.validator.addMethod(
     'confirmPassword',
-    function (value, element, params) {
+    (value, element, params) => {
         if (params) {
             if (value === $('#' + params).val()) {
                 return true
@@ -102,14 +102,14 @@ $(document).ready(function () {
             }
         },
         errorElement: 'span',
-        errorPlacement: function (error, element) {
+        errorPlacement: (error, element) => {
           error.addClass('invalid-feedback');
           element.closest('.form-group').append(error);
         },
-        highlight: function (element, errorClass, validClass) {
+        highlight: (element, errorClass, validClass) => {
           $(element).addClass('is-invalid');
         },
-        unhighlight: function (element, errorClass, validClass) {
+        unhighlight: (element, errorClass, validClass) => {
           $(element).removeClass('is-invalid');
         }
     });
@@ -142,14 +142,14 @@ $(document).ready(function () {
             }
         },
         errorElement: 'span',
-        errorPlacement: function (error, element) {
+        errorPlacement: (error, element) => {
           error.addClass('invalid-feedback');
           element.closest('.form-group').append(error);
         },
-        highlight: function (element, errorClass, validClass) {
+        highlight: (element, errorClass, validClass) => {
           $(element).addClass('is-invalid');
         },
-        unhighlight: function (element, errorClass, validClass) {
+        unhighlight: (element, errorClass, validClass) => {
           $(element).removeClass('is-invalid');
         }
     });
@@ -200,14 +200,14 @@ $(document).ready(function () {
             }
         },
         errorElement: 'span',
-        errorPlacement: function (error, element) {
+        errorPlacement: (error, element) => {
           error.addClass('invalid-feedback');
           element.closest('.form-group').append(error);
         },
-        highlight: function (element, errorClass, validClass) {
+        highlight: (element, errorClass, validClass) => {
           $(element).addClass('is-invalid');
         },
-        unhighlight: function (element, errorClass, validClass) {
+        unhighlight: (element, errorClass, validClass) => {
           $(element).removeClass('is-invalid');
         }
     });

@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, render_to_response
 
 from blog.forms import BlogStartForm, EmailForm, LoginForm, RecoverPasswordForm
-from blog.tools import send_verify_email, verify_email
+from blog.tools import send_verify_email, verify_email, get_blog_settings
 
 # 初始化网站
 from blog.models import BlogSettings, BlogUser
@@ -72,7 +72,15 @@ def blog_login(request):
     # ajax返回的信息
     resp = {'status': None, 'info': None}
     if request.method == 'GET':
-        return render(request, 'blog_login.html')
+
+        head_title = 'login - '
+        bs = get_blog_settings()
+        if bs:
+            head_title = head_title + bs.site_name
+        else:
+            head_title = head_title + 'ublog'
+
+        return render(request, 'blog_login.html', {'head_title': head_title})
     elif request.method == 'POST':
         # ajax返回的信息
         resp = {'status': None, 'info': None}
@@ -97,7 +105,13 @@ def blog_login(request):
 # 找回密码
 def recover_password(request):
     if request.method == 'GET':
-        return render(request, 'recover_password.html')
+        head_title = 'recover password - '
+        bs = get_blog_settings()
+        if bs:
+            head_title = head_title + bs.site_name
+        else:
+            head_title = head_title + 'ublog'
+        return render(request, 'recover_password.html', {'head_title': head_title})
     elif request.method == 'POST':
         resp = {'status': None, 'info': None}
         rpf = RecoverPasswordForm(request.POST)

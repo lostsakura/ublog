@@ -1,7 +1,7 @@
 "use strict";
 
 // 获取邮箱验证码
-$('#blog-start-get-verify-code').click(function () {
+$('#blog-start-get-verify-code').click(() => {
 
     // 局部验证 - 验证邮箱
     let is_valid = $('#blog-start-form').validate().element($('#user-email'));
@@ -9,7 +9,7 @@ $('#blog-start-get-verify-code').click(function () {
         $.post('/get-verify-code/', {
             userEmail: $('#user-email').val(),
             type: '0'
-        }, function (data) {
+        }, (data) => {
             if (data['status'] === 'success') {
                 Swal.fire({
                     toast: true,
@@ -35,7 +35,7 @@ $('#blog-start-get-verify-code').click(function () {
 
 
 // 表单提交
-$("#blog-start-submit").click(function () {
+$("#blog-start-submit").click(() => {
     // 验证表单
     let is_valid = $('#blog-start-form').valid();
     if (is_valid) {
@@ -49,7 +49,7 @@ $("#blog-start-submit").click(function () {
             siteDesc: $('#site-desc').val(),
             siteKeyword: $('#site-keyword').val(),
             siteAllowComment: $('#site-allow-comment').val()
-        }, function (data) {
+        }, (data) => {
             // 回调函数
             if (data['status'] === 'success') {
                 Swal.fire({
