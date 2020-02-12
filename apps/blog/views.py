@@ -6,10 +6,10 @@ from django.shortcuts import render, redirect, render_to_response
 from blog.forms import BlogStartForm, EmailForm, LoginForm, RecoverPasswordForm
 from blog.tools import send_verify_email, verify_email, get_blog_settings
 
-# 初始化网站
 from blog.models import BlogSettings, BlogUser
 
 
+# 初始化网站
 def blog_start(request):
     try:
         blog_settings = BlogSettings.objects.all().order_by('-id').first()
@@ -64,7 +64,13 @@ def blog_index(request):
 
 # 后台
 def blog_admin(request):
-    return render(request, 'admin_main.html')
+    head_title = '后台管理 - '
+    bs = get_blog_settings()
+    if bs:
+        head_title = head_title + bs.site_name
+    else:
+        head_title = head_title + 'ublog'
+    return render(request, 'admin_main.html', {'head_title': head_title})
 
 
 # 登陆
@@ -72,14 +78,12 @@ def blog_login(request):
     # ajax返回的信息
     resp = {'status': None, 'info': None}
     if request.method == 'GET':
-
         head_title = 'login - '
         bs = get_blog_settings()
         if bs:
             head_title = head_title + bs.site_name
         else:
             head_title = head_title + 'ublog'
-
         return render(request, 'blog_login.html', {'head_title': head_title})
     elif request.method == 'POST':
         # ajax返回的信息
