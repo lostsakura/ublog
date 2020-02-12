@@ -3,10 +3,10 @@ from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, render_to_response
 
-from blog.forms import BlogStartForm, EmailForm, LoginForm, RecoverPasswordForm
+from blog.forms import BlogStartForm, EmailForm, LoginForm, RecoverPasswordForm, ManageLabelsForm, DeleteResourceForm
 from blog.tools import send_verify_email, verify_email, get_blog_settings
 
-from blog.models import BlogSettings, BlogUser
+from blog.models import BlogSettings, BlogUser, BlogLabel
 
 
 # 初始化网站
@@ -157,7 +157,8 @@ def blog_logout(request):
 
 # 概要
 def admin_index(request):
-    return render(request, 'admin_index.html')
+    section_title = "系统概要"
+    return render(request, 'admin_index.html', {'section_title': section_title})
 
 
 # 文章编辑
@@ -187,7 +188,69 @@ def manage_comments(request):
 
 # 标签管理
 def manage_labels(request):
-    return render(request, 'admin_manage_labels.html')
+    section_title = '标签管理'
+    if request.method == 'GET':
+        operation_type = request.GET['type']
+        update_item = None
+        edit_table_title = None
+        action_type = None
+        is_edit = True
+        if operation_type == 'list':
+            edit_table_title = '添加标签'
+            action_type = 'add'
+        elif operation_type == 'update':
+            edit_table_title = '修改标签'
+            try:
+                update_item = BlogLabel.objects.filter(id=request.GET['num']).order_by('id').first()
+            except Exception as e:
+                update_item = None
+            if update_item is None:
+                is_edit = False
+            action_type = 'update'
+        bl_list = BlogLabel.objects.all().order_by('id')
+        return render(request, 'admin_manage_labels.html', {'section_title': section_title,
+                                                            'edit_table_title': edit_table_title,
+                                                            'bl_list': bl_list,
+                                                            'update_item': update_item,
+                                                            'action_type': action_type,
+                                                            'is_edit': is_edit})
+    elif request.method == 'POST':
+        mlf = ManageLabelsForm(request.POST)
+        resp = {'status': None, 'info': None}
+        if mlf.is_valid():
+            try:
+                cbl = BlogLabel.objects.filter(label_name=request.POST['labelName']).first()
+            except Exception as e:
+                cbl = None
+            if cbl is not None:
+                resp['status'] = 'error'
+                resp['info'] = '标签已存在'
+                return JsonResponse(resp)
+            if request.POST['labelId'] != '0':
+                try:
+                    bl = BlogLabel.objects.filter(id=request.POST['labelId']).first()
+                except Exception as e:
+                    bl = None
+                if bl is not None:
+                    bl.label_name = request.POST['labelName']
+                    bl.save()
+                    resp['status'] = 'success'
+                    resp['info'] = '成功修改为' + request.POST['labelName']
+                    return JsonResponse(resp)
+                else:
+                    resp['status'] = 'error'
+                    resp['info'] = '要修改的标签不存在，请重试'
+                    return JsonResponse(resp)
+            bl = BlogLabel()
+            bl.label_name = request.POST['labelName']
+            bl.save()
+            resp['status'] = 'success'
+            resp['info'] = '添加成功'
+            return JsonResponse(resp)
+        resp['status'] = 'error'
+        resp['info'] = '您输入的信息不合法，请重试'
+        print(mlf.errors)
+        return JsonResponse(resp)
 
 
 # 个人设置
@@ -222,6 +285,31 @@ def tool_get_verify_code(request):
     resp['status'] = 'error'
     resp['info'] = '验证码发送失败'
     return JsonResponse(resp)
+
+
+# 删除资源
+def deleteResource(request):
+    if request.method == 'POST':
+        resp = {'status': None, 'info': None}
+        drf = DeleteResourceForm(request.POST)
+        if drf.is_valid():
+            if request.POST['resourceType'] == 'blog_label':
+                try:
+                    bl = BlogLabel.objects.filter(id=request.POST['resourceId']).first()
+                except Exception as e:
+                    bl = None
+                if bl is not None:
+                    bl.delete()
+                    resp['status'] = 'success'
+                    resp['info'] = '已删除'
+                    return JsonResponse(resp)
+                else:
+                    resp['status'] = 'error'
+                    resp['info'] = '删除的项目不存在，请检查后重试'
+                    return JsonResponse(resp)
+        resp['status'] = 'error'
+        resp['info'] = '提交的删除信息有误，请检查后重试'
+        return JsonResponse(resp)
 
 
 # 403无权限访问

@@ -211,6 +211,37 @@ $(document).ready(function () {
           $(element).removeClass('is-invalid');
         }
     });
+
+    // manage_labels
+    $('#admin-manage-labels-form').validate({
+        rules: {
+            labelName: {
+                required: true,
+            },
+            labelId: {
+                required: true
+            }
+        },
+        messages: {
+            labelName: {
+                required: "标签名称不能为空",
+            },
+            labelId: {
+                required: "!"
+            }
+        },
+        errorElement: 'span',
+        errorPlacement: (error, element) => {
+          error.addClass('invalid-feedback');
+          element.closest('.form-group').append(error);
+        },
+        highlight: (element, errorClass, validClass) => {
+          $(element).addClass('is-invalid');
+        },
+        unhighlight: (element, errorClass, validClass) => {
+          $(element).removeClass('is-invalid');
+        }
+    });
 });
 
 

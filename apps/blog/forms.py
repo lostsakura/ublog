@@ -43,3 +43,15 @@ class RecoverPasswordForm(forms.Form):
     userEmail = forms.EmailField(required=True)
     verifyCode = forms.CharField(required=True)
     newPassword = forms.CharField(required=True, max_length=16, min_length=8)
+
+
+# 标签编辑表单
+class ManageLabelsForm(forms.Form):
+    labelName = forms.CharField(required=True)
+    labelId = forms.CharField(required=True)
+
+
+# 删除资源表单
+class DeleteResourceForm(forms.Form):
+    resourceType = forms.ChoiceField(required=True, choices=(('blog_label', 'blog_label'), ('0', '0')))
+    resourceId = forms.CharField(required=True)

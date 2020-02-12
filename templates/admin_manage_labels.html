@@ -3,8 +3,111 @@
 
 <!-- body -->
 {% block body %}
+
+<body style="background-color: inherit">
+<!-- Content Header (Page header) -->
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+
+      <div class="col-sm-6">
+        <!-- 页面标题栏 -->
+        <h1 class="m-0 text-dark">{{section_title}}</h1>
+      </div><!-- /.col -->
+    </div><!-- /.row -->
+  </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <!-- Info boxes -->
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">标签列表</h3>
+            <div class="card-tools">
+              <ul class="pagination pagination-sm float-right">
+                <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+              </ul>
+            </div>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body p-0">
+            <table class="table">
+              <tbody>
+              {% for bl_item in bl_list%}
+              <tr>
+                <td>
+                  {{bl_item.label_name}}
+                  <a href="/admin/manage-labels?type=update&num={{bl_item.id}}">
+                    <span class="btn btn-sm btn-outline-warning float-right">
+                      <i class="far fa-edit"></i>
+                    </span>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- /.card -->
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">{{edit_table_title}}</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            {% if is_edit %}
+            <form role="form" id="admin-manage-labels-form">
+              <div class="form-group" style="display: none">
+                <label for="label-name">标签id</label>
+                <input type="text" class="form-control" id="label-id" disabled
+                       value="{% if update_item.id %}{{update_item.id}}{%else%}0{% endif %}">
+              </div>
+              <div class="form-group">
+                <label for="label-name">标签名称</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="label-name" name="labelName"
+                         value="{% if update_item.label_name %}{{update_item.label_name}}{% endif %}">
+                  {% if action_type == 'update' %}
+                  <span class="input-group-append">
+                  <button type="button" class="btn btn-danger" id="admin-manage-labels-delete">删除</button>
+                  </span>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="form-group">
+
+                <button type="button" id="admin-manage-labels-submit" class="btn btn-primary col-lg-3">
+                  {% if action_type == 'add' %}添加{% elif action_type == 'update' %}修改{% endif %}
+                </button>
+
+
+              </div>
+              {% if action_type == 'update' %}
+              {% endif %}
+            </form>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+
 {% endblock %}
 
 <!-- 自定义Js -->
 {% block customizedJs %}
+<script src="/static/js/pages/manage_labels.js"></script>
 {% endblock %}
