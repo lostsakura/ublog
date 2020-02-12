@@ -1,0 +1,3 @@
+$(() => {
+    parentTagActive('ublog-tab-index');
+});

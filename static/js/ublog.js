@@ -20,3 +20,15 @@ $('.ublog-logout-btn').click(() => {
     });
     return false;
 });
+
+// 点击切换选项卡
+function tagActive(tag) {
+    $('.nav-link').removeClass('active');
+    $('#' + tag).addClass('active');
+}
+
+// 切换父框架的选项卡
+function parentTagActive(tag) {
+    $('.nav-link', parent.document).removeClass('active');
+   $("#" + tag, parent.document).addClass('active');
+}
