@@ -34,6 +34,8 @@ def blog_start(request):
             new_bu.username = request.POST['userName']
             new_bu.email = request.POST['userEmail']
             new_bu.password = make_password(request.POST['userPassword'])
+            new_bu.is_staff = True
+            new_bu.is_superuser = True
             new_bu.save()
             new_bs = BlogSettings()
             new_bs.site_name = request.POST['siteName']
