@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password
+from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, render_to_response
 
@@ -197,10 +198,13 @@ def manage_labels(request):
         edit_table_title = None
         action_type = None
         is_edit = True
+        page_num = int(request.GET['page'])
         if operation_type == 'list':
+            section_title = section_title + ' - 添加'
             edit_table_title = '添加标签'
             action_type = 'add'
         elif operation_type == 'update':
+            section_title = section_title + ' - 修改'
             edit_table_title = '修改标签'
             try:
                 update_item = BlogLabel.objects.filter(id=request.GET['num']).order_by('id').first()
@@ -209,10 +213,19 @@ def manage_labels(request):
             if update_item is None:
                 is_edit = False
             action_type = 'update'
+        # 分页处理
         bl_list = BlogLabel.objects.all().order_by('id')
+        table_list = Paginator(bl_list, 10)
+        total_page = table_list.num_pages
+        # 判断请求的页面是否存在
+        if page_num > total_page or page_num <= 0:
+            return page_not_found(request)
+
         return render(request, 'admin_manage_labels.html', {'section_title': section_title,
                                                             'edit_table_title': edit_table_title,
-                                                            'bl_list': bl_list,
+                                                            'bl_list': table_list.page(page_num),
+                                                            'total_page': total_page,
+                                                            'page_num': page_num,
                                                             'update_item': update_item,
                                                             'action_type': action_type,
                                                             'is_edit': is_edit})

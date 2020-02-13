@@ -28,13 +28,6 @@
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">标签列表</h3>
-            <div class="card-tools">
-              <ul class="pagination pagination-sm float-right">
-                <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-              </ul>
-            </div>
           </div>
           <!-- /.card-header -->
           <div class="card-body p-0">
@@ -44,7 +37,7 @@
               <tr>
                 <td>
                   {{bl_item.label_name}}
-                  <a href="/admin/manage-labels?type=update&num={{bl_item.id}}">
+                  <a href="/admin/manage-labels?type=update&page={{ page_num }}&num={{bl_item.id}}">
                     <span class="btn btn-sm btn-outline-warning float-right">
                       <i class="far fa-edit"></i>
                     </span>
@@ -55,6 +48,22 @@
               </tbody>
             </table>
           </div>
+          <div class="card-footer clearfix">
+            <ul class="pagination pagination-sm m-0 float-right">
+                {% if bl_list.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="/admin/manage-labels?type=list&page={{ page_num|add:-1 }}">&laquo;</a>
+                </li>
+                {% endif %}
+                <li class="page-item"><a class="page-link" href="#">{{ page_num }}/{{ total_page }}</a></li>
+                {% if bl_list.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="/admin/manage-labels?type=list&page={{ page_num|add:1 }}">&raquo;</a>
+                </li>
+              {% endif %}
+              </ul>
+          </div>
+
         </div>
         <!-- /.card -->
       </div>
