@@ -166,7 +166,8 @@ def admin_index(request):
 
 # 文章编辑
 def write_article(request):
-    return render(request, 'admin_write_article.html')
+    section_title = '撰写新文章'
+    return render(request, 'admin_write_article.html', {'section_title': section_title})
 
 
 # 独立页面编辑
