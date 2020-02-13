@@ -55,3 +55,13 @@ class ManageLabelsForm(forms.Form):
 class DeleteResourceForm(forms.Form):
     resourceType = forms.ChoiceField(required=True, choices=(('blog_label', 'blog_label'), ('0', '0')))
     resourceId = forms.CharField(required=True)
+
+
+# 文章编辑表单
+class ArticleWriteForm(forms.Form):
+    articleTitle = forms.CharField(required=True)
+    articleContent = forms.TextInput()
+    articleIsPrivate = forms.ChoiceField(required=True, choices=(('0', '所有人可见'), ('1', '仅自己可见')))
+    articleLabel = forms.CharField()
+    articleIsDraft = forms.ChoiceField(required=True, choices=(('0', 'is_draft'), ('1', 'not_draft')))
+    articleId = forms.CharField(required=True)

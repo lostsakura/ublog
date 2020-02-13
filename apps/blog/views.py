@@ -1,13 +1,16 @@
+from datetime import datetime
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, render_to_response
 
-from blog.forms import BlogStartForm, EmailForm, LoginForm, RecoverPasswordForm, ManageLabelsForm, DeleteResourceForm
-from blog.tools import send_verify_email, verify_email, get_blog_settings
+from blog.forms import BlogStartForm, EmailForm, LoginForm, RecoverPasswordForm, ManageLabelsForm, DeleteResourceForm, \
+    ArticleWriteForm
+from blog.tools import send_verify_email, verify_email, get_blog_settings, zero_transition
 
-from blog.models import BlogSettings, BlogUser, BlogLabel
+from blog.models import BlogSettings, BlogUser, BlogLabel, BlogArticle
 
 
 # 初始化网站
@@ -43,7 +46,7 @@ def blog_start(request):
             new_bs.site_address = request.POST['siteAddress']
             new_bs.site_desc = request.POST['siteDesc']
             new_bs.site_keyword = request.POST['siteKeyword']
-            new_bs.allow_comment = True if request.POST['siteAllowComment'] == 1 else False
+            new_bs.allow_comment = zero_transition(request.POST['siteAllowComment'])
             new_bs.save()
             resp['status'] = 'success'
             resp['info'] = '正在跳转至后台管理页面'
@@ -166,8 +169,45 @@ def admin_index(request):
 
 # 文章编辑
 def write_article(request):
-    section_title = '撰写新文章'
-    return render(request, 'admin_write_article.html', {'section_title': section_title})
+    if request.method == 'GET':
+        # 撰写新的文章
+        bl_list = BlogLabel.objects.all().order_by('id')
+        if request.GET['type'] == 'add':
+            section_title = '撰写新文章'
+            return render(request, 'admin_write_article.html', {'section_title': section_title,
+                                                                'bl_list': bl_list})
+    elif request.method == 'POST':
+        resp = {'status': None, 'info': None}
+        awf = ArticleWriteForm(request.POST)
+        if awf.is_valid():
+            if request.POST['articleId'] == '0':
+                ba = BlogArticle()
+                resp['info'] = '发布成功'
+                resp['status'] = 'success'
+            else:
+                try:
+                    ba = BlogArticle.objects.get(id=request.POST['articleId'])
+                except Exception as e:
+                    ba = None
+                if ba is not None:
+                    resp['info'] = '修改成功'
+                    resp['status'] = 'success'
+                else:
+                    resp['info'] = '提交信息有误，请检查后重试'
+                    resp['status'] = 'error'
+                    return JsonResponse(resp)
+            ba.title = request.POST['articleTitle']
+            ba.content = request.POST['articleContent']
+            ba.is_private = zero_transition(request.POST['articleIsPrivate'])
+            ba.is_draft = zero_transition(request.POST['articleIsDraft'])
+            if request.POST['articleLabel'] != '0':
+                ba.label = BlogLabel.objects.get(id=request.POST['articleLabel']).label_name
+            ba.update_time = datetime.now()
+            ba.save()
+            return JsonResponse(resp)
+        resp['info'] = '提交信息有误，请检查后重试'
+        resp['status'] = 'error'
+        return JsonResponse(resp)
 
 
 # 独立页面编辑

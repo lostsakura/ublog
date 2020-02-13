@@ -64,3 +64,9 @@ def get_blog_settings():
     return blog_settings
 
 
+# 转换01
+def zero_transition(num):
+    if num == '1':
+        return True
+    return False
+

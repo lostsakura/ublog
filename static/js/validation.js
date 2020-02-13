@@ -212,6 +212,7 @@ $(document).ready(function () {
         }
     });
 
+
     // manage_labels
     $('#admin-manage-labels-form').validate({
         rules: {
@@ -230,6 +231,36 @@ $(document).ready(function () {
                 required: "!"
             }
         },
+        errorElement: 'span',
+        errorPlacement: (error, element) => {
+          error.addClass('invalid-feedback');
+          element.closest('.form-group').append(error);
+        },
+        highlight: (element, errorClass, validClass) => {
+          $(element).addClass('is-invalid');
+        },
+        unhighlight: (element, errorClass, validClass) => {
+          $(element).removeClass('is-invalid');
+        }
+    });
+
+
+
+
+    // write_article
+    $('#write-article-form').validate({
+        rules: {
+            articleTitle: {
+                required: true,
+            }
+        },
+
+        messages: {
+            articleTitle: {
+                required: "必须填写标题",
+            }
+        },
+
         errorElement: 'span',
         errorPlacement: (error, element) => {
           error.addClass('invalid-feedback');
