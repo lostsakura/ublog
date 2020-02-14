@@ -393,7 +393,10 @@ def user_setup(request):
 
 # 系统设置
 def system_setup(request):
-    return render(request, 'admin_system_setup.html')
+    if request.method == 'GET':
+        section_title = '系统设置'
+        # BlogSettings
+        return render(request, 'admin_system_setup.html')
 
 
 # 获取邮箱验证码

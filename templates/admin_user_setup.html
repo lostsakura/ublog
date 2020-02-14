@@ -27,6 +27,12 @@
             <form role="form" id="user-settings-form">
               <div class="card-body" style="min-height: 600px">
                 <input type="text" value="{{ blog_user.id }}" id="us-user-id" style="display: none">
+
+                <div class="form-group">
+                  <lable for="us-username">邮箱</lable>
+                  <input type="text" class="form-control" value="{{ blog_user.email }}" disabled>
+                </div>
+
                 <div class="form-group">
                   <lable for="us-username">用户名</lable>
                   <input type="text" class="form-control" id="us-username" name="userName" value="{{ blog_user.username }}">
