@@ -1,5 +1,17 @@
 "use strict";
 
+// 获取当前url中的参数
+function getQueryVariable(variable)
+{
+   let query = window.location.search.substring(1);
+   let vars = query.split("&");
+   for (let i=0;i<vars.length;i++) {
+           let pair = vars[i].split("=");
+           if(pair[0] === variable){return pair[1];}
+   }
+   return false;
+}
+
 $(() => {
     parentTagActive('ublog-tab-wa');
 
@@ -9,6 +21,12 @@ $(() => {
         tabsize: 2,
         height: 300
     });
+
+    // 反显编辑器内容
+    if( getQueryVariable('type') === 'update') {
+        let aasnc = $('#article-sn-content').html();
+        $('#article-content').summernote('code', aasnc);
+    }
 });
 
 // 提交文章

@@ -53,8 +53,9 @@ class ManageLabelsForm(forms.Form):
 
 # 删除资源表单
 class DeleteResourceForm(forms.Form):
-    resourceType = forms.ChoiceField(required=True, choices=(('blog_label', 'blog_label'), ('0', '0')))
     resourceId = forms.CharField(required=True)
+    resourceType = forms.ChoiceField(required=True, choices=(('blog_label', 'blog_label'),
+                                                             ('blog_article', 'blog_article')))
 
 
 # 文章编辑表单

@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 
 from django.contrib.auth import authenticate, login, logout
@@ -181,6 +182,15 @@ def write_article(request):
             section_title = '撰写新文章'
             return render(request, 'admin_write_article.html', {'section_title': section_title,
                                                                 'bl_list': bl_list})
+        elif request.GET['type'] == 'update':
+            section_title = '编辑文章'
+            try:
+                ba = BlogArticle.objects.get(id=request.GET['num'])
+            except Exception as e:
+                ba = None
+            return render(request, 'admin_write_article.html', {'section_title': section_title,
+                                                                'bl_list': bl_list,
+                                                                'ba_item': ba})
     elif request.method == 'POST':
         resp = {'status': None, 'info': None}
         awf = ArticleWriteForm(request.POST)
@@ -269,7 +279,29 @@ def write_page(request):
 
 # 文章管理
 def manage_articles(request):
-    return render(request, 'admin_manage_articles.html')
+    if request.method == 'GET':
+        section_title = '管理文章'
+        page_num = request.GET['page']
+        list_type = request.GET['list']
+        ba_list = None
+
+        if list_type == 'public':
+            section_title = section_title + ' - 公开'
+            ba_list = BlogArticle.objects.filter(is_private=False, is_draft=False).order_by('id')
+        elif list_type == 'private':
+            section_title = section_title + ' - 隐私'
+            ba_list = BlogArticle.objects.filter(is_private=True, is_draft=False).order_by('id')
+        elif list_type == 'draft':
+            section_title = section_title + ' - 草稿'
+            ba_list = BlogArticle.objects.filter(is_draft=True).order_by('id')
+        # 分页处理
+        table_list = Paginator(ba_list, 10)
+        total_page = table_list.num_pages
+        return render(request, 'admin_manage_articles.html', {'section_title': section_title,
+                                                              'ba_list': table_list.page(page_num),
+                                                              'list_type': list_type,
+                                                              'total_page': total_page,
+                                                              'page_num': page_num})
 
 
 # 独立页面管理
@@ -472,6 +504,19 @@ def deleteResource(request):
                     resp['status'] = 'error'
                     resp['info'] = '删除的项目不存在，请检查后重试'
                     return JsonResponse(resp)
+            elif request.POST['resourceType'] == 'blog_article':
+                delete_list = json.loads(request.POST['resourceId'])
+                for item in delete_list:
+                    try:
+                        ba = BlogArticle.objects.get(id=str(item))
+                    except Exception as e:
+                        ba = None
+                    if ba is not None:
+                        ba.delete()
+                resp['status'] = 'success'
+                resp['info'] = '已删除'
+                return JsonResponse(resp)
+
         resp['status'] = 'error'
         resp['info'] = '提交的删除信息有误，请检查后重试'
         return JsonResponse(resp)

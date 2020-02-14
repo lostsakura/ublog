@@ -31,11 +31,11 @@
           <div class="card">
             <form role="form" id="write-article-form">
               <div class="card-body" style="min-height: 600px">
-                <input type="text" value="0" id="article-id" style="display: none">
+                <input type="text" value="{{ ba_item.id|default:0}}" id="article-id" style="display: none">
 
                 <div class="form-group">
                   <input type="text" class="form-control form-control-lg" id="article-title" name="articleTitle"
-                         placeholder="标题">
+                         placeholder="标题" value="{{ ba_item.title }}">
                 </div>
 
                 <div class="form-group">
@@ -47,8 +47,8 @@
                   <label for="article-is-private" class="col-md-2 col-form-label">查看状态</label>
                   <div class="col-md-3">
                     <select class="form-control" id="article-is-private">
-                      <option value="0">所有人可见</option>
-                      <option value="1">仅自己可见</option>
+                      <option value="0" {% if not ba_item.is_private %}selected{% endif %}>所有人可见</option>
+                      <option value="1"{% if ba_item.is_private %}selected{% endif %}>仅自己可见</option>
                     </select>
                   </div>
                 </div>
@@ -57,9 +57,11 @@
                   <label for="article-label" class="col-md-2 col-form-label">标签</label>
                   <div class="col-md-3">
                     <select class="form-control" id="article-label">
-                      <option value="0" selected>无</option>
+                      <option value="0">无</option>
                       {% for bl_item in bl_list %}
-                        <option value="{{ bl_item.id }}">{{ bl_item.label_name }}</option>
+                        <option value="{{ bl_item.id }}" {% if ba_item.label == bl_item.label_name %}selected{% endif %}>
+                          {{ bl_item.label_name }}
+                        </option>
                       {% endfor %}
                     </select>
                   </div>
@@ -81,7 +83,9 @@
                   </div>
                 </div>
               </div>
-
+            {% if ba_item %}
+              <div id="article-sn-content" style="display: none">{{ ba_item.content|safe }}</div>
+            {% endif %}
             </form>
           </div>
         </div>
