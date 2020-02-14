@@ -254,7 +254,6 @@ $(document).ready(function () {
                 required: true,
             }
         },
-
         messages: {
             articleTitle: {
                 required: "必须填写标题",
@@ -273,6 +272,44 @@ $(document).ready(function () {
           $(element).removeClass('is-invalid');
         }
     });
+
+
+    // write_article
+    $('#write-page-form').validate({
+        rules: {
+            pageTitle: {
+                required: true,
+            },
+            pageSortId: {
+                required: true,
+                digits: true,
+                range: [0, 10]
+            }
+        },
+        messages: {
+            pageTitle: {
+                required: "必须填写标题",
+            },
+            pageSortId: {
+                required: "必须填写排序ID，可使用默认值0",
+                digits: "排序ID只能为正整数",
+                range: "排序ID应介于0-10之间"
+            }
+        },
+
+        errorElement: 'span',
+        errorPlacement: (error, element) => {
+          error.addClass('invalid-feedback');
+          element.closest('.form-group').append(error);
+        },
+        highlight: (element, errorClass, validClass) => {
+          $(element).addClass('is-invalid');
+        },
+        unhighlight: (element, errorClass, validClass) => {
+          $(element).removeClass('is-invalid');
+        }
+    });
+
 });
 
 

@@ -65,3 +65,12 @@ class ArticleWriteForm(forms.Form):
     articleLabel = forms.CharField()
     articleIsDraft = forms.ChoiceField(required=True, choices=(('0', 'is_draft'), ('1', 'not_draft')))
     articleId = forms.CharField(required=True)
+
+
+# 页面编辑表单
+class PageWriteForm(forms.Form):
+    pageId = forms.IntegerField(required=True)
+    pageTitle = forms.CharField(required=True)
+    pageContent = forms.TextInput()
+    pageSortId = forms.IntegerField(required=True, min_value=0, max_value=10)
+    pageIsDraft = forms.ChoiceField(required=True, choices=(('0', 'is_draft'), ('1', 'not_draft')))

@@ -58,6 +58,22 @@ class BlogArticle(models.Model):
         return '{0}'.format(self.title)
 
 
+# 独立页面model
+class BlogPage(models.Model):
+    id = models.BigAutoField(verbose_name="id", primary_key=True)
+    title = models.CharField(verbose_name="标题", null=False, max_length=50)
+    content = models.TextField(verbose_name="内容", default="")
+    sort_id = models.IntegerField(verbose_name="排序", default=1, null=False)
+    is_draft = models.BooleanField(verbose_name="是否草稿", choices=((True, "是"), (False, "否")), default=True)
+
+    class Meta:
+        verbose_name = "独立页面"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return '{0}'.format(self.title)
+
+
 # 分类标签
 class BlogLabel(models.Model):
     id = models.BigAutoField(verbose_name="id", primary_key=True)

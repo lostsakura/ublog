@@ -7,10 +7,10 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, render_to_response
 
 from blog.forms import BlogStartForm, EmailForm, LoginForm, RecoverPasswordForm, ManageLabelsForm, DeleteResourceForm, \
-    ArticleWriteForm
+    ArticleWriteForm, PageWriteForm
 from blog.tools import send_verify_email, verify_email, get_blog_settings, zero_transition
 
-from blog.models import BlogSettings, BlogUser, BlogLabel, BlogArticle
+from blog.models import BlogSettings, BlogUser, BlogLabel, BlogArticle, BlogPage
 
 
 # 初始化网站
@@ -179,40 +179,87 @@ def write_article(request):
     elif request.method == 'POST':
         resp = {'status': None, 'info': None}
         awf = ArticleWriteForm(request.POST)
+        ba = None
         if awf.is_valid():
             if request.POST['articleId'] == '0':
                 ba = BlogArticle()
-                resp['info'] = '发布成功'
-                resp['status'] = 'success'
             else:
                 try:
                     ba = BlogArticle.objects.get(id=request.POST['articleId'])
                 except Exception as e:
                     ba = None
-                if ba is not None:
-                    resp['info'] = '修改成功'
-                    resp['status'] = 'success'
-                else:
+                if ba is None:
                     resp['info'] = '提交信息有误，请检查后重试'
                     resp['status'] = 'error'
                     return JsonResponse(resp)
             ba.title = request.POST['articleTitle']
             ba.content = request.POST['articleContent']
             ba.is_private = zero_transition(request.POST['articleIsPrivate'])
-            ba.is_draft = zero_transition(request.POST['articleIsDraft'])
+            if zero_transition(request.POST['articleIsDraft']):
+                ba.is_draft = True
+                resp['info'] = '草稿保存成功'
+            else:
+                ba.is_draft = False
+                resp['info'] = '文章发布成功'
             if request.POST['articleLabel'] != '0':
                 ba.label = BlogLabel.objects.get(id=request.POST['articleLabel']).label_name
             ba.update_time = datetime.now()
             ba.save()
+            resp['status'] = 'success'
             return JsonResponse(resp)
-        resp['info'] = '提交信息有误，请检查后重试'
-        resp['status'] = 'error'
-        return JsonResponse(resp)
+        else:
+            resp['info'] = '提交信息有误，请检查后重试'
+            resp['status'] = 'error'
+            return JsonResponse(resp)
 
 
 # 独立页面编辑
 def write_page(request):
-    return render(request, 'admin_write_page.html')
+    if request.method == 'GET':
+        section_title = None
+        page_item = None
+        if request.GET['type'] == 'add':
+            section_title = '添加新页面'
+        elif request.GET['type'] == 'update':
+            try:
+                page_item = BlogPage.objects.get(id=request.GET['num'])
+            except Exception as e:
+                page_item = None
+            section_title = '修改页面'
+        return render(request, 'admin_write_page.html', {'section_title': section_title,
+                                                         'page_item': page_item})
+    elif request.method == 'POST':
+        resp = {'status': None, 'info': None}
+        pwf = PageWriteForm(request.POST)
+        bp = None
+        if pwf.is_valid():
+            if request.POST['pageId'] == '0':
+                bp = BlogPage()
+            else:
+                try:
+                    bp = BlogPage.objects.get(id=request.POST['pageId'])
+                except Exception as e:
+                    bp = None
+                if bp is None:
+                    resp['info'] = '提交信息有误，请检查后重试'
+                    resp['status'] = 'error'
+                    return JsonResponse(resp)
+            bp.title = request.POST['pageTitle']
+            bp.content = request.POST['pageContent']
+            bp.sort_id = request.POST['pageSortId']
+            if zero_transition(request.POST['pageIsDraft']):
+                bp.is_draft = True
+                resp['info'] = '草稿保存成功'
+            else:
+                bp.is_draft = False
+                resp['info'] = '文章发布成功'
+            bp.save()
+            resp['status'] = 'success'
+            return JsonResponse(resp)
+        else:
+            resp['info'] = '提交信息有误，请检查后重试'
+            resp['status'] = 'error'
+            return JsonResponse(resp)
 
 
 # 文章管理

@@ -1,27 +1,28 @@
 "use strict";
 
 $(() => {
-    parentTagActive('ublog-tab-wa');
+    parentTagActive('ublog-tab-wp');
 
     // Summernote
-    $('#article-content').summernote({
+    $('#page-content').summernote({
         placeholder: '创作你的创作',
         tabsize: 2,
         height: 300
     });
 });
 
-// 提交文章
-function submitArticle(type) {
-    let is_valid = $('#write-article-form').valid();
+// #write-page-form
+
+// 提交页面
+function submitPage(type) {
+    let is_valid = $('#write-page-form').valid();
     if (is_valid) {
-        $.post('/admin/write-article/', {
-            articleTitle: $('#article-title').val(),
-            articleContent: $('#article-content').summernote('code'),
-            articleIsPrivate: $('#article-is-private').val(),
-            articleLabel: $('#article-label').val(),
-            articleId: $('#article-id').val(),
-            articleIsDraft: type
+        $.post('/admin/write-page/', {
+            pageId: $('#page-id').val(),
+            pageTitle: $('#page-title').val(),
+            pageContent: $('#page-content').summernote('code'),
+            pageSortId: $('#page-sort-id').val(),
+            pageIsDraft: type
         }, (data) => {
             if (data['status'] === 'success') {
                 window.parent.Swal.fire({
@@ -30,7 +31,7 @@ function submitArticle(type) {
                     timer: 2000,
                     showConfirmButton: false,
                     onClose: () => {
-                        $(window).attr('location', '/admin/admin-index/');
+                        $(window).attr('location', '/admin/manage-pages/');
                     }
                 });
             } else if (data['status'] === 'error') {
@@ -47,5 +48,3 @@ function submitArticle(type) {
         });
     }
 }
-
-
