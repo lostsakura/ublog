@@ -4,19 +4,19 @@
 <!-- body -->
 {% block body %}
   <body style="background-color: inherit">
-<!-- Content Header (Page header) -->
-<div class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
 
-      <div class="col-sm-6">
-        <!-- 页面标题栏 -->
-        <h1 class="m-0 text-dark">{{section_title}}</h1>
-      </div><!-- /.col -->
-    </div><!-- /.row -->
-  </div><!-- /.container-fluid -->
-</div>
-<!-- /.content-header -->
+        <div class="col-sm-6">
+          <!-- 页面标题栏 -->
+          <h1 class="m-0 text-dark">{{ section_title }}</h1>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
 
   <!-- Main content -->
   <section class="content">
@@ -26,13 +26,13 @@
         <div class="col-12">
           <div class="card">
             <form role="form" id="system-settings-form">
-              <div class="card-body" style="min-height: 600px">
+              <div class="card-body" style="min-height: 430px">
                 <input type="text" value="{{ blog_settings.id }}" id="ss-bs-id" style="display: none">
 
                 <div class="form-group">
                   <lable for="ss-site-name">站点名称</lable>
                   <input type="text" class="form-control" id="ss-site-name" name="siteName"
-                         value="{{ blog_settings.site_name }}" >
+                         value="{{ blog_settings.site_name }}">
                 </div>
 
                 <div class="form-group">
