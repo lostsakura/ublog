@@ -7,7 +7,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, render_to_response
 
 from blog.forms import BlogStartForm, EmailForm, LoginForm, RecoverPasswordForm, ManageLabelsForm, DeleteResourceForm, \
-    ArticleWriteForm, PageWriteForm, UserSettingsForm
+    ArticleWriteForm, PageWriteForm, UserSettingsForm, SystemSettingsForm
 from blog.tools import send_verify_email, verify_email, get_blog_settings, zero_transition
 
 from blog.models import BlogSettings, BlogUser, BlogLabel, BlogArticle, BlogPage
@@ -395,8 +395,37 @@ def user_setup(request):
 def system_setup(request):
     if request.method == 'GET':
         section_title = '系统设置'
-        # BlogSettings
-        return render(request, 'admin_system_setup.html')
+        try:
+            bs = BlogSettings.objects.order_by('id').first()
+        except Exception as e:
+            bs = None
+        return render(request, 'admin_system_setup.html', {'blog_settings': bs,
+                                                           'section_title': section_title})
+    elif request.method == 'POST':
+        resp = {'status': None, 'info': None}
+        ssf = SystemSettingsForm(request.POST)
+        bs = None
+        if ssf.is_valid():
+            try:
+                bs = BlogSettings.objects.get(id=request.POST['siteId'])
+            except Exception as e:
+                bs = None
+            if bs is None:
+                resp['status'] = 'error'
+                resp['info'] = '提交的信息有误，请检查后重试'
+                return JsonResponse(resp)
+            bs.site_address = request.POST['siteAddress']
+            bs.site_name = request.POST['siteName']
+            bs.site_desc = request.POST['siteDesc']
+            bs.site_keyword = request.POST['siteKeyword']
+            bs.allow_comment = zero_transition(request.POST['siteAllowComment'])
+            bs.save()
+            resp['status'] = 'success'
+            resp['info'] = '系统信息修改成功'
+        else:
+            resp['status'] = 'error'
+            resp['info'] = '提交的信息有误，请检查后重试'
+        return JsonResponse(resp)
 
 
 # 获取邮箱验证码

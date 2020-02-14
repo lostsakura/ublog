@@ -3,6 +3,7 @@
 
 <!-- body -->
 {% block body %}
+  <body style="background-color: inherit">
 <!-- Content Header (Page header) -->
 <div class="content-header">
   <div class="container-fluid">
@@ -16,8 +17,73 @@
   </div><!-- /.container-fluid -->
 </div>
 <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <!-- Info boxes -->
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <form role="form" id="system-settings-form">
+              <div class="card-body" style="min-height: 600px">
+                <input type="text" value="{{ blog_settings.id }}" id="ss-bs-id" style="display: none">
+
+                <div class="form-group">
+                  <lable for="ss-site-name">站点名称</lable>
+                  <input type="text" class="form-control" id="ss-site-name" name="siteName"
+                         value="{{ blog_settings.site_name }}" >
+                </div>
+
+                <div class="form-group">
+                  <lable for="ss-site-address">站点地址</lable>
+                  <input type="text" class="form-control" id="ss-site-address" name="siteAddress"
+                         value="{{ blog_settings.site_address }}">
+                </div>
+
+                <div class="form-group">
+                  <lable for="ss-site-desc">站点描述</lable>
+                  <input type="text" class="form-control" id="ss-site-desc" name="siteDesc"
+                         value="{{ blog_settings.site_desc }}">
+                </div>
+
+                <div class="form-group">
+                  <lable for="ss-site-keyword">站点关键词</lable>
+                  <input type="text" class="form-control" id="ss-site-keyword" name="siteKeyword"
+                         value="{{ blog_settings.site_keyword }}">
+                </div>
+
+                <div class="form-group row">
+                  <label for="ss-allow-comment" class="col-md-2 col-form-label">全站是否开启评论</label>
+                  <div class="col-md-3">
+                    <select class="form-control" id="ss-allow-comment" name="siteAllowComment">
+                      <option {% if not blog_settings.allow_comment %}selected{% endif %} value="0">否</option>
+                      <option {% if blog_settings.allow_comment %}selected{% endif %} value="1">是</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-footer">
+                <div class="form-group row">
+                  <div class="col-6 offset-sm-10 col-sm-2">
+                    <button type="button" class="btn btn-block btn-success" onclick="submitSystemSettings()">
+                      保存设置
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </body>
 {% endblock %}
 
 <!-- 自定义Js -->
 {% block customizedJs %}
+  <script src="/static/js/pages/system-setup.js"></script>
 {% endblock %}

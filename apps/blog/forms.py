@@ -17,8 +17,8 @@ class BlogStartForm(forms.Form):
     userPassword = forms.CharField(required=True, max_length=16, min_length=8)
     userName = forms.CharField(required=True, max_length=20, min_length=4)
     siteName = forms.CharField(required=True)
-    siteAddress = forms.URLField()
-    siteDesc = forms.CharField()
+    siteAddress = forms.URLField(required=False)
+    siteDesc = forms.CharField(required=False)
     siteKeyword = forms.CharField(required=True)
     siteAllowComment = forms.ChoiceField(required=True, choices=(('1', True), ('0', False)))
 
@@ -62,8 +62,8 @@ class ArticleWriteForm(forms.Form):
     articleTitle = forms.CharField(required=True)
     articleContent = forms.TextInput()
     articleIsPrivate = forms.ChoiceField(required=True, choices=(('0', '所有人可见'), ('1', '仅自己可见')))
-    articleLabel = forms.CharField()
-    articleIsDraft = forms.ChoiceField(required=True, choices=(('0', 'is_draft'), ('1', 'not_draft')))
+    articleLabel = forms.CharField(required=False)
+    articleIsDraft = forms.ChoiceField(required=True, choices=(('0', 'not_draft'), ('1', 'is_draft')))
     articleId = forms.CharField(required=True)
 
 
@@ -80,3 +80,13 @@ class PageWriteForm(forms.Form):
 class UserSettingsForm(forms.Form):
     userId = forms.IntegerField(required=True)
     userName = forms.CharField(required=True, max_length=20, min_length=4)
+
+
+# 系统设置表单
+class SystemSettingsForm(forms.Form):
+    siteId = forms.IntegerField(required=True)
+    siteName = forms.CharField(required=True)
+    siteAddress = forms.URLField(required=False)
+    siteDesc = forms.CharField(required=False)
+    siteKeyword = forms.CharField(required=True)
+    siteAllowComment = forms.ChoiceField(required=True, choices=(('1', True), ('0', False)))

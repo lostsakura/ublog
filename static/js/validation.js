@@ -339,6 +339,50 @@ $(document).ready(function () {
         }
     });
 
+
+    // system-settings-form
+    $('#system-settings-form').validate({
+        rules: {
+            siteName: {
+                required: true
+            },
+            siteAddress: {
+                url: true
+            },
+            siteKeyword: {
+                required: true
+            },
+            siteAllowComment: {
+                required: true
+            }
+        },
+        messages: {
+            siteName: {
+                required: "站点名称不能为空"
+            },
+            siteAddress: {
+                url: "请输入合法的网址"
+            },
+            siteKeyword: {
+                required: "站点关键词不能为空，例如：ublog,blog,我的博客 等"
+            },
+            siteAllowComment: {
+                required: "必须选择"
+            }
+        },
+        errorElement: 'span',
+        errorPlacement: (error, element) => {
+          error.addClass('invalid-feedback');
+          element.closest('.form-group').append(error);
+        },
+        highlight: (element, errorClass, validClass) => {
+          $(element).addClass('is-invalid');
+        },
+        unhighlight: (element, errorClass, validClass) => {
+          $(element).removeClass('is-invalid');
+        }
+    });
+
 });
 
 
