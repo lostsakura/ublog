@@ -48,7 +48,7 @@ function submitArticle(type) {
                     timer: 2000,
                     showConfirmButton: false,
                     onClose: () => {
-                        $(window).attr('location', '/admin/admin-index/');
+                        $(window).attr('location', '/admin/manage-articles?list=public&page=1');
                     }
                 });
             } else if (data['status'] === 'error') {
