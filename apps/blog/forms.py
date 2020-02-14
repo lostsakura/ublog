@@ -74,3 +74,9 @@ class PageWriteForm(forms.Form):
     pageContent = forms.TextInput()
     pageSortId = forms.IntegerField(required=True, min_value=0, max_value=10)
     pageIsDraft = forms.ChoiceField(required=True, choices=(('0', 'is_draft'), ('1', 'not_draft')))
+
+
+# 用户设置表单
+class UserSettingsForm(forms.Form):
+    userId = forms.IntegerField(required=True)
+    userName = forms.CharField(required=True, max_length=20, min_length=4)

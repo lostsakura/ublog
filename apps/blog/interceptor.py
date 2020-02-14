@@ -53,7 +53,7 @@ class PermissionInterceptor(MiddlewareMixin):
                 return forbidden(request)
         else:
             # 用户登录后的禁用地址
-            forbid_list = ['/forgot-password/', '/login/']
+            forbid_list = ['/login/']
             if access_path in forbid_list:
                 return forbidden(request)
 

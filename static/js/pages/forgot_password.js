@@ -35,7 +35,7 @@ $('#forgot-password-get-verify-code').click(() => {
 $('#forgot-password-submit').click(() => {
     let is_valid = $('#forgot-password-form').valid();
     if (is_valid) {
-        $.post('/forgot-password/', {
+        $.post('/recover-password/', {
             userEmail: $('#user-email').val(),
             verifyCode: $('#verify-code').val(),
             newPassword: $('#confirm-new-password').val()

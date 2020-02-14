@@ -7,7 +7,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, render_to_response
 
 from blog.forms import BlogStartForm, EmailForm, LoginForm, RecoverPasswordForm, ManageLabelsForm, DeleteResourceForm, \
-    ArticleWriteForm, PageWriteForm
+    ArticleWriteForm, PageWriteForm, UserSettingsForm
 from blog.tools import send_verify_email, verify_email, get_blog_settings, zero_transition
 
 from blog.models import BlogSettings, BlogUser, BlogLabel, BlogArticle, BlogPage
@@ -112,7 +112,7 @@ def blog_login(request):
         return JsonResponse(resp)
 
 
-# 找回密码
+# 重置密码
 def recover_password(request):
     if request.method == 'GET':
         head_title = 'recover password - '
@@ -140,6 +140,10 @@ def recover_password(request):
                     user.save()
                     resp['status'] = 'success'
                     resp['info'] = '您的用户名为 【' + user.username + '】'
+                    # 如果处于登陆状态，则退出登录状态
+                    if request.user.is_authenticated:
+                        logout(request)
+                        request.session.flush()
                     return JsonResponse(resp)
                 else:
                     resp['status'] = 'error'
@@ -154,10 +158,11 @@ def recover_password(request):
 # 注销
 def blog_logout(request):
     if request.method == 'POST':
-        logout(request)
-        request.session.flush()
-        resp = {'status': 'success'}
-        return JsonResponse(resp)
+        if request.user.is_authenticated:
+            logout(request)
+            request.session.flush()
+            resp = {'status': 'success'}
+            return JsonResponse(resp)
     return forbidden(request)
 
 
@@ -358,7 +363,32 @@ def manage_labels(request):
 
 # 个人设置
 def user_setup(request):
-    return render(request, 'admin_user_setup.html')
+    if request.method == 'GET':
+        section_title = '个人设置'
+        bu = BlogUser.objects.order_by('id').first()
+        return render(request, 'admin_user_setup.html', {'blog_user': bu,
+                                                         'section_title': section_title})
+    elif request.method == 'POST':
+        resp = {'status': None, 'info': None}
+        usf = UserSettingsForm(request.POST)
+        bu = None
+        if usf.is_valid():
+            try:
+                bu = BlogUser.objects.get(id=request.POST['userId'])
+            except Exception as e:
+                bu = None
+            if bu is None:
+                resp['status'] = 'error'
+                resp['info'] = '提交的信息有误，请检查后重试'
+                return JsonResponse(resp)
+            bu.username = request.POST['userName']
+            bu.save()
+            resp['status'] = 'success'
+            resp['info'] = '用户信息修改成功'
+        else:
+            resp['status'] = 'error'
+            resp['info'] = '提交的信息有误，请检查后重试'
+        return JsonResponse(resp)
 
 
 # 系统设置

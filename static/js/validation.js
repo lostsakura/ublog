@@ -246,7 +246,6 @@ $(document).ready(function () {
 
 
 
-
     // write_article
     $('#write-article-form').validate({
         rules: {
@@ -297,6 +296,36 @@ $(document).ready(function () {
             }
         },
 
+        errorElement: 'span',
+        errorPlacement: (error, element) => {
+          error.addClass('invalid-feedback');
+          element.closest('.form-group').append(error);
+        },
+        highlight: (element, errorClass, validClass) => {
+          $(element).addClass('is-invalid');
+        },
+        unhighlight: (element, errorClass, validClass) => {
+          $(element).removeClass('is-invalid');
+        }
+    });
+
+
+    // user_settings
+    $('#user-settings-form').validate({
+        rules: {
+            userName: {
+                required: true,
+                minlength: 4,
+                maxlength: 20
+            }
+        },
+        messages: {
+            userName: {
+                required: "用户名不能为空",
+                minlength: "密码最小长度不能少于4位",
+                maxlength: "密码最大长度不能超过20位"
+            }
+        },
         errorElement: 'span',
         errorPlacement: (error, element) => {
           error.addClass('invalid-feedback');
