@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect, render_to_response
 
 from blog.forms import BlogStartForm, EmailForm, LoginForm, RecoverPasswordForm, ManageLabelsForm, DeleteResourceForm, \
     ArticleWriteForm, PageWriteForm, UserSettingsForm, SystemSettingsForm
-from blog.tools import send_verify_email, verify_email, get_blog_settings, zero_transition
+from blog.tools import send_verify_email, verify_email, get_blog_settings, zero_transition, batch_delete
 
 from blog.models import BlogSettings, BlogUser, BlogLabel, BlogArticle, BlogPage
 
@@ -262,12 +262,13 @@ def write_page(request):
             bp.title = request.POST['pageTitle']
             bp.content = request.POST['pageContent']
             bp.sort_id = request.POST['pageSortId']
+            bp.update_time = datetime.now()
             if zero_transition(request.POST['pageIsDraft']):
                 bp.is_draft = True
                 resp['info'] = '草稿保存成功'
             else:
                 bp.is_draft = False
-                resp['info'] = '文章发布成功'
+                resp['info'] = '页面发布成功'
             bp.save()
             resp['status'] = 'success'
             return JsonResponse(resp)
@@ -280,7 +281,7 @@ def write_page(request):
 # 文章管理
 def manage_articles(request):
     if request.method == 'GET':
-        section_title = '管理文章'
+        section_title = '文章管理'
         page_num = request.GET['page']
         list_type = request.GET['list']
         ba_list = None
@@ -306,7 +307,11 @@ def manage_articles(request):
 
 # 独立页面管理
 def manage_pages(request):
-    return render(request, 'admin_manage_pages.html')
+    if request.method == 'GET':
+        section_title = '独立页面管理'
+        bp_list = BlogPage.objects.all().order_by('-sort_id')
+        return render(request, 'admin_manage_pages.html', {'section_title': section_title,
+                                                           'bp_list': bp_list})
 
 
 # 评论管理
@@ -345,7 +350,6 @@ def manage_labels(request):
         # 判断请求的页面是否存在
         if page_num > total_page or page_num <= 0:
             return page_not_found(request)
-
         return render(request, 'admin_manage_labels.html', {'section_title': section_title,
                                                             'edit_table_title': edit_table_title,
                                                             'bl_list': table_list.page(page_num),
@@ -504,18 +508,9 @@ def deleteResource(request):
                     resp['status'] = 'error'
                     resp['info'] = '删除的项目不存在，请检查后重试'
                     return JsonResponse(resp)
-            elif request.POST['resourceType'] == 'blog_article':
-                delete_list = json.loads(request.POST['resourceId'])
-                for item in delete_list:
-                    try:
-                        ba = BlogArticle.objects.get(id=str(item))
-                    except Exception as e:
-                        ba = None
-                    if ba is not None:
-                        ba.delete()
-                resp['status'] = 'success'
-                resp['info'] = '已删除'
-                return JsonResponse(resp)
+            elif request.POST['resourceType'] == 'blog_article' or request.POST['resourceType'] == 'blog_page':
+                return JsonResponse(batch_delete(resource_type=request.POST['resourceType'],
+                                                 resource_ids=request.POST['resourceId']))
 
         resp['status'] = 'error'
         resp['info'] = '提交的删除信息有误，请检查后重试'

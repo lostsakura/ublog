@@ -1,11 +1,12 @@
 import datetime
+import json
 import time
 import random
 
 from django.core.mail import send_mail
 from django.conf import settings
 
-from blog.models import EmailVerifyRecord, BlogSettings
+from blog.models import EmailVerifyRecord, BlogSettings, BlogArticle, BlogPage, ArticleComment
 
 
 # 转换以秒为单位的时间戳
@@ -69,4 +70,26 @@ def zero_transition(num):
     if num == '1':
         return True
     return False
+
+
+# 批量删除
+def batch_delete(resource_type, resource_ids):
+    resp = {'status': None, 'info': None}
+    delete_list = json.loads(resource_ids)
+    for item in delete_list:
+        bi = None
+        try:
+            if resource_type == 'blog_article':
+                bi = BlogArticle.objects.get(id=str(item))
+            elif resource_type == 'blog_page':
+                bi = BlogPage.objects.get(id=str(item))
+            elif resource_type == 'blog_comment':
+                bi = ArticleComment.objects.get(id=str(item))
+        except Exception as e:
+            bi = None
+        if bi is not None:
+            bi.delete()
+    resp['status'] = 'success'
+    resp['info'] = '已删除'
+    return resp
 

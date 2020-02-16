@@ -17,6 +17,56 @@
     </div><!-- /.container-fluid -->
   </div>
   <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <!-- Info boxes -->
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body p-0">
+              <table class="table">
+                <thead class="table">
+                <tr>
+                  <th style="width: 60px"></th>
+                  <th style="width: 120px">排序</th>
+                  <th>标题</th>
+                  <th style="width: 120px">发布状态</th>
+                  <th style="width: 120px">日期</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for bp_item in bp_list %}
+                  <tr>
+                    <td><input type="checkbox" class="bp-checkbox" value="{{ bp_item.id }}"></td>
+                    <td>{{ bp_item.sort_id }}</td>
+                    <td><a href="/admin/write-page?type=update&num={{ bp_item.id }}">{{ bp_item.title }}</a></td>
+                    <td>{% if bp_item.is_draft %}草稿{% else %}公开{% endif %}</td>
+                    <td>{{ bp_item.update_time|date:'m-d' }}</td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer clearfix">
+
+              <div class="btn-group btn-group-sm">
+                <button type="button" class="btn btn-warning">选中项</button>
+                <button type="button" class="btn btn-warning dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                  <span class="sr-only">Toggle Dropdown</span>
+                  <div class="dropdown-menu" role="menu">
+                    <a class="dropdown-item" onclick="deleteItems()">删除</a>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   </body>
 {% endblock %}
 
