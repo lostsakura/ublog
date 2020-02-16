@@ -65,6 +65,8 @@ urlpatterns = [
 
     # 获取邮箱验证码
     path('get-verify-code/', v.tool_get_verify_code),
+    # 错误页面
+    path('admin/error/', v.blog_error),
 
     # 多媒体用
     re_path(r'^media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}),

@@ -231,6 +231,9 @@ def write_article(request):
 # 独立页面编辑
 def write_page(request):
     if request.method == 'GET':
+        # 如果独立页面数超过7个，则跳转错误页面
+        if BlogPage.objects.count() >= 7:
+            return blog_error(request, '独立页面数最多不能超过7个')
         section_title = None
         page_item = None
         if request.GET['type'] == 'add':
@@ -515,6 +518,11 @@ def deleteResource(request):
         resp['status'] = 'error'
         resp['info'] = '提交的删除信息有误，请检查后重试'
         return JsonResponse(resp)
+
+
+# 错误信息
+def blog_error(request, msg=""):
+    return render(request, 'admin_error.html', {'error_message': msg})
 
 
 # 403无权限访问
