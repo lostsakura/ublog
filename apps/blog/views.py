@@ -11,7 +11,7 @@ from blog.forms import BlogStartForm, EmailForm, LoginForm, RecoverPasswordForm,
     ArticleWriteForm, PageWriteForm, UserSettingsForm, SystemSettingsForm
 from blog.tools import send_verify_email, verify_email, get_blog_settings, zero_transition, batch_delete
 
-from blog.models import BlogSettings, BlogUser, BlogLabel, BlogArticle, BlogPage
+from blog.models import BlogSettings, BlogUser, BlogLabel, BlogArticle, BlogPage, ArticleComment
 
 
 # 初始化网站
@@ -170,7 +170,15 @@ def blog_logout(request):
 # 概要
 def admin_index(request):
     section_title = "系统概要"
-    return render(request, 'admin_index.html', {'section_title': section_title})
+    article_count = BlogArticle.objects.filter(is_draft=False).count()
+    draft_count = BlogArticle.objects.filter(is_draft=True).count()
+    comment_count = ArticleComment.objects.count()
+    recent_articles_list = BlogArticle.objects.filter(is_draft=False).order_by('created_time')[:7]
+    return render(request, 'admin_index.html', {'section_title': section_title,
+                                                'article_count': article_count,
+                                                'draft_count': draft_count,
+                                                'comment_count': comment_count,
+                                                'recent_articles_list': recent_articles_list})
 
 
 # 文章编辑
@@ -231,12 +239,12 @@ def write_article(request):
 # 独立页面编辑
 def write_page(request):
     if request.method == 'GET':
-        # 如果独立页面数超过7个，则跳转错误页面
-        if BlogPage.objects.count() >= 7:
-            return blog_error(request, '独立页面数最多不能超过7个')
         section_title = None
         page_item = None
         if request.GET['type'] == 'add':
+            # 如果独立页面数超过7个，则跳转错误页面
+            if BlogPage.objects.count() >= 7:
+                return blog_error(request, '独立页面数最多不能超过7个')
             section_title = '添加新页面'
         elif request.GET['type'] == 'update':
             try:

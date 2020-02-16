@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser
 # 系统设置model
 class BlogSettings(models.Model):
     id = models.BigAutoField(verbose_name="id", primary_key=True)
-    site_name = models.CharField(verbose_name='站点名称', default='Hello World!', max_length=100)
+    site_name = models.CharField(verbose_name='站点名称', default='Hello World!', max_length=100, null=False)
     site_address = models.CharField(verbose_name='站点地址', default='http://u.blog', max_length=500)
     site_desc = models.CharField(verbose_name='站点描述', default='Just So So...', max_length=500)
     site_keyword = models.CharField(verbose_name='关键词', default='ublog', max_length=500)
