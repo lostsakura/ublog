@@ -1,5 +1,10 @@
 "use strict";
 
+// 联动选项卡
+$(() => {
+    parentTagActive('ublog-tab-ml');
+});
+
 // 获取当前url中的参数
 function getQueryVariable(variable)
 {
@@ -11,11 +16,6 @@ function getQueryVariable(variable)
    }
    return false;
 }
-
-// 联动选项卡
-$(() => {
-    parentTagActive('ublog-tab-ml');
-});
 
 // 提交按钮
 $('#admin-manage-labels-submit').click(() => {

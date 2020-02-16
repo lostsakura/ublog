@@ -1,5 +1,10 @@
 "use strict";
 
+// 联动选项卡
+$(() => {
+    parentTagActive('ublog-tab-ma');
+});
+
 // 获取当前url中的参数
 function getQueryVariable(variable)
 {
@@ -11,6 +16,7 @@ function getQueryVariable(variable)
    }
    return false;
 }
+
 
 function changeArticleListURL(action_type) {
     window.location.href = '/admin/manage-articles?list=' + action_type +'&page=1'

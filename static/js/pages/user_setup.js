@@ -25,7 +25,7 @@ function submitUserSettings() {
                         timer: 2000,
                         showConfirmButton: false,
                         onClose: () => {
-                            $(window).attr('location', '/admin/user-setup/');
+                            self.parent.location.reload();
                         }
                     });
                 } else if (data['status'] === 'error') {

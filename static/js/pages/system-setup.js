@@ -24,7 +24,7 @@ function submitSystemSettings() {
                     timer: 2000,
                     showConfirmButton: false,
                     onClose: () => {
-                        $(window).attr('location', '/admin/system-setup/');
+                        self.parent.location.reload();
                     }
                 });
             } else if (data['status'] === 'error') {
