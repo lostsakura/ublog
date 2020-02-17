@@ -66,7 +66,51 @@ def blog_start(request):
 
 # 首页
 def blog_index(request):
-    return render(request, 'index.html')
+    return blog_list(request=request)
+
+
+# 列表页面
+def blog_list(request, category='page', lid=1, page_num=1):
+    bs = BlogSettings.objects.all().order_by('id').first()
+    us = BlogUser.objects.all().order_by('id').first()
+    bl = BlogLabel.objects.all().order_by('id')
+    show_type = category
+    ba_list = None
+    label_name = None
+    if category == 'page':
+        if request.user.is_authenticated:
+            ba_list = BlogArticle.objects.filter(is_draft=False).order_by('created_time')
+        else:
+            ba_list = BlogArticle.objects.filter(is_draft=False, is_private=False).order_by('created_time')
+    elif category == 'label':
+        show_type = '分类标签'
+        try:
+            ln = BlogLabel.objects.get(id=int(lid)).label_name
+        except Exception as e:
+            ln = None
+        if ln is not None:
+            label_name = ln
+            try:
+                if request.user.is_authenticated:
+                    ba_list = BlogArticle.objects.filter(label=ln, is_draft=False).order_by('created_time')
+                else:
+                    ba_list = BlogArticle.objects.filter(label=ln, is_draft=False, is_private=False)\
+                        .order_by('created_time')
+            except Exception as e:
+                ba_list = None
+    # 分页处理
+    table_list = Paginator(ba_list, 7)
+    total_page = table_list.num_pages
+
+    return render(request, 'blog_list.html', {'blog_setting': bs,
+                                              'user_setting': us,
+                                              'label_list': bl,
+                                              'article_list': table_list.page(page_num),
+                                              'total_page': total_page,
+                                              'show_type': show_type,
+                                              'page_num': page_num,
+                                              'lid': lid,
+                                              'label_name': label_name})
 
 
 # 后台

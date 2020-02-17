@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="renderer" content="webkit">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>{{ blog_setting.site_name }}</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap-grid.min.css">
+  <link rel="stylesheet" href="/static/css/ublog_style.css">
+
+  <!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- 通过自有函数输出HTML头部信息 -->
+  <meta name="description" content="{{ blog_setting.site_desc }}">
+  <meta name="keywords" content="{{ blog_setting.site_keyword }}">
+
+</head>
+<body>
+
+<header class="container u-header">
+  <div class="row">
+    <div class="col-12">
+      <a class="u-logo" href="/">{{ blog_setting.site_name }}</a>
+      <p class="u-desc">{{ blog_setting.site_desc }}</p>
+    </div>
+    <div class="col-12">
+      <ul class="u-nav">
+        <li class="u-nav-item u-nav-active"><a href="/" class="u-nav-link">首页</a></li>
+        <li class="u-nav-item"><a href="#" class="u-nav-link">归类</a></li>
+      </ul>
+    </div>
+  </div>
+  </div>
+</header>
+
+{% block content %}
+
+{% endblock %}
+
+<footer class="u-footer">
+  ©2020 Ublog.
+</footer>
+
+</body>
+</html>

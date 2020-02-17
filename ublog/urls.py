@@ -13,11 +13,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from urllib.parse import quote
+
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, re_path
 from django.views.static import serve
+from apps.blog.tools import get_labels
 
 from blog import views as v
 urlpatterns = [
@@ -67,6 +70,10 @@ urlpatterns = [
     path('get-verify-code/', v.tool_get_verify_code),
     # 错误页面
     path('admin/error/', v.blog_error),
+
+    # 博客列表页面
+    re_path('(?P<category>label)/lid_(?P<lid>[1-9][0-9]*)/(?P<page_num>[1-9][0-9]*)/', v.blog_list),
+    re_path('(?P<category>page)/(?P<page_num>[1-9][0-9]*)/', v.blog_list),
 
     # 多媒体用
     re_path(r'^media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}),

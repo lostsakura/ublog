@@ -6,7 +6,7 @@ import random
 from django.core.mail import send_mail
 from django.conf import settings
 
-from blog.models import EmailVerifyRecord, BlogSettings, BlogArticle, BlogPage, ArticleComment
+from blog.models import EmailVerifyRecord, BlogSettings, BlogArticle, BlogPage, ArticleComment, BlogLabel
 
 
 # 转换以秒为单位的时间戳
@@ -93,3 +93,10 @@ def batch_delete(resource_type, resource_ids):
     resp['info'] = '已删除'
     return resp
 
+
+# 获取label组
+def get_labels():
+    bln_list = BlogLabel.objects.values('label_name')
+    bln_list_s = []
+    for bln_item in bln_list:
+        bln_list_s.append(bln_item['label_name'])
