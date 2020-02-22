@@ -1,0 +1,21 @@
+{% if blog_setting.allow_comment %}
+  <div class="u-comment">
+    <h3 class="u-comment-title">添加新评论</h3>
+    <form role="form" id="u-comment-form">
+      <div class="u-form-group">
+        <label for="u-bc-name">称呼<span class="u-invalid-feedback">*</span></label>
+        <input id="u-bc-name" name="u-bc-name" class="u-form-control" type="text">
+      </div>
+      <div class="u-form-group">
+        <label for="u-bc-email" class="u-bc-label">邮箱<span class="u-invalid-feedback">*</span></label>
+        <input id="u-bc-email" name="u-bc-email" class="u-form-control" type="email">
+      </div>
+      <div class="u-form-group">
+        <label for="u-bc-content">内容<span class="u-invalid-feedback">*</span></label>
+        <textarea id="u-bc-content" name="u-bc-content" class="u-form-control"></textarea>
+      </div>
+      <button class="u-bc-button" type="button" id="u-bc-submit" onclick="submitComment()">提交评论</button>
+
+    </form>
+  </div>
+{% endif %}

@@ -41,13 +41,13 @@ $('#forgot-password-submit').click(() => {
             newPassword: $('#confirm-new-password').val()
         }, (data) => {
             if (data['status'] === 'success') {
-                $('.login-box').fadeOut(240, ()=>{
+                $('.login-box').fadeOut(240, () => {
                     Swal.fire({
                         icon: 'success',
                         title: '重置密码成功',
                         text: data['info'],
                         onClose: () => {
-                            $(window).attr('location','/login/');
+                            $(window).attr('location', '/login/');
                         }
                     });
                 });
@@ -66,8 +66,8 @@ $('#forgot-password-submit').click(() => {
 });
 
 // 监听回车键
-$(document).keyup(function(event){
-   if(event.keyCode === 13){
-       $('#forgot-password-submit').trigger("click");
-   }
+$(document).keyup(function (event) {
+    if (event.keyCode === 13) {
+        $('#forgot-password-submit').trigger("click");
+    }
 });

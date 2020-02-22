@@ -59,7 +59,7 @@ $("#blog-start-submit").click(() => {
                     timer: 2000,
                     showConfirmButton: false,
                     onClose: () => {
-                        $(window).attr('location','/admin/');
+                        $(window).attr('location', '/admin/');
                     }
                 });
             } else if (data['status'] === 'error') {

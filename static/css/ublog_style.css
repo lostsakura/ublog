@@ -2,7 +2,7 @@
 .u-header {
     padding-top: 35px;
     padding-bottom: 10px;
-    border-bottom: 1px solid #eeeeee;
+    border-bottom: 1px solid #dddddd;
 }
 
 .u-logo {
@@ -34,6 +34,10 @@
     display: inline-block;
 }
 
+.u-nav-item:hover {
+    font-weight: bolder;
+}
+
 .u-nav-link {
     text-decoration: none;
     font-size: 16px;
@@ -49,10 +53,10 @@
 
 /* main-content */
 .u-content {
-    border-bottom: 1px solid #eeeeee;
-}
-/* main-content-end*/
 
+}
+
+/* main-content-end*/
 
 
 /* 列表标题 */
@@ -69,7 +73,7 @@
 /* 博客列表文章样式end */
 .u-list-article {
     padding: 15px 0 25px 0;
-    border-bottom: 1px solid #eeeeee;
+    border-bottom: 1px solid #dddddd;
 }
 
 .u-list-article-desc-nav {
@@ -162,11 +166,88 @@ ul.u-widget-list > li {
     padding: 15px 0;
 }
 
+.u-article-id {
+    display: none;
+}
+
 .u-article-content {
-    margin: 15px 0;
+    margin: 15px 0 30px;
 }
 
 /* 文章样式end */
+
+
+/* 评论框样式 */
+.u-comment {
+    border-top: 1px solid #dddddd;
+    padding: 15px 0;
+}
+
+.u-comment-title {
+    color: #444444;
+}
+
+.u-form-group {
+    margin-bottom: 15px;
+    display: block;
+}
+
+.u-form-group > * {
+    margin: 0;
+}
+
+.u-form-group > label {
+    display: inline-block;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #444444;
+    letter-spacing: .1em;
+    padding: 4px 1px 5px;
+}
+
+.u-form-control {
+    display: block;
+    padding: 4px;
+    font-size: .9em;
+    width: 100%;
+    resize: vertical;
+
+}
+
+textarea {
+    height: 160px;
+}
+
+.u-bc-button {
+    background-color: #e8e8e8;
+    border: 1px solid #444444;
+    padding: 5px 15px;
+    display: inline-block;
+    font-size: .7em;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.u-bc-button:hover {
+    cursor: pointer;
+}
+
+.u-is-invalid {
+    border: 1px solid #ea0000;
+}
+
+.u-is-invalid:active {
+    border: 1px solid #ea0000;
+}
+
+.u-invalid-feedback {
+    font-size: .5em;
+    color: #ea0000;
+
+}
+
+/* 评论框样式end */
 
 
 /* 独立页面样式 */

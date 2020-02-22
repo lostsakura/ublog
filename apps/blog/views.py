@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, render_to_response
 
 from blog.forms import BlogStartForm, EmailForm, LoginForm, RecoverPasswordForm, ManageLabelsForm, DeleteResourceForm, \
-    ArticleWriteForm, PageWriteForm, UserSettingsForm, SystemSettingsForm
+    ArticleWriteForm, PageWriteForm, UserSettingsForm, SystemSettingsForm, SubmitCommentForm
 from blog.tools import send_verify_email, verify_email, get_blog_settings, zero_transition, batch_delete
 
 from blog.models import BlogSettings, BlogUser, BlogLabel, BlogArticle, BlogPage, ArticleComment
@@ -154,6 +154,31 @@ def blog_page(request, page_id):
                                               'user_setting': us,
                                               'blog_page': bp,
                                               'blog_page_item': bpi})
+
+
+# 提交评论
+def blog_comment(request):
+    if request.method == 'POST':
+        resp = {'status': None, 'info': None}
+        scf = SubmitCommentForm(request.POST)
+        if scf:
+            try:
+                ba = BlogArticle.objects.get(id=request.POST['articleId'])
+            except Exception as e:
+                ba = None
+            if ba is not None:
+                ac = ArticleComment()
+                ac.article = ba
+                ac.author = request.POST['commentName']
+                ac.email = request.POST['commentEmail']
+                ac.content = request.POST['commentContent']
+                ac.save()
+                resp['status'] = 'success'
+                resp['info'] = '评论已成功提交至博主审核'
+                return JsonResponse(resp)
+        resp['status'] = 'error'
+        resp['info'] = '提交的信息有误，请检查后重试'
+        return JsonResponse(resp)
 
 
 # 后台

@@ -94,6 +94,7 @@ class ArticleComment(models.Model):
     id = models.BigAutoField(verbose_name="id", primary_key=True)
     article = models.ForeignKey(BlogArticle, verbose_name="文章", on_delete=None)
     author = models.CharField(verbose_name="游客名称", null=False, max_length=20)
+    email = models.EmailField(verbose_name="游客邮箱", null=False)
     content = models.CharField(verbose_name="内容", default="", max_length=140)
     is_passed = models.BooleanField(verbose_name="是否通过审阅", choices=((True, "是"), (False, "否")), default=False)
 

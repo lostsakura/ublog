@@ -5,6 +5,7 @@
 {% block content %}
   <section class="col-md-8">
     <article class="u-article">
+      <span class="u-article-id">{{ blog_article.id }}</span>
       <h1 class="u-article-title">{{ blog_article.title }}</h1>
       <ul class="u-list-article-desc-nav">
         <li>作者:{{ user_setting.username }}</li>
@@ -15,8 +16,7 @@
         {{ blog_article.content|safe }}
       </div>
     </article>
+    {% include 'blog_comment.html' %}
   </section>
-
   {% include 'blog_aside.html' %}
-
 {% endblock %}

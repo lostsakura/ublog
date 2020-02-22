@@ -92,3 +92,11 @@ class SystemSettingsForm(forms.Form):
     siteDesc = forms.CharField(required=False)
     siteKeyword = forms.CharField(required=True)
     siteAllowComment = forms.ChoiceField(required=True, choices=(('1', True), ('0', False)))
+
+
+# 提交评论表单
+class SubmitCommentForm(forms.Form):
+    articleId = forms.IntegerField(required=True)
+    commentName = forms.CharField(required=True, min_length=2, max_length=20)
+    commentEmail = forms.EmailField(required=True)
+    commentContent = forms.TextInput()

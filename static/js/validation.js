@@ -2,7 +2,7 @@
  * 用于验证ublog的所有form表单
  */
 
-"use strict";
+'use strict';
 
 // 添加自定义jquery-validator验证规则
 $.validator.addMethod(
@@ -71,46 +71,46 @@ $(document).ready(function () {
         },
         messages: {
             userEmail: {
-                required: "邮箱不能为空",
-                email: "请输入格式正确的邮箱"
+                required: '邮箱不能为空',
+                email: '请输入格式正确的邮箱'
             },
             userPassword: {
-                required: "密码不能为空",
-                minlength: "密码最小长度不能少于8位",
-                maxlength: "密码最大长度不能超过16位"
+                required: '密码不能为空',
+                minlength: '密码最小长度不能少于8位',
+                maxlength: '密码最大长度不能超过16位'
             },
             userName: {
-                required: "用户名不能为空",
-                minlength: "密码最小长度不能少于4位",
-                maxlength: "密码最大长度不能超过20位"
+                required: '用户名不能为空',
+                minlength: '用户名最小长度不能少于4位',
+                maxlength: '用户名最大长度不能超过20位'
             },
             verifyCode: {
-                required: "验证码不能为空",
-                emailVerifyCode: "请输入格式正确的验证码"
+                required: '验证码不能为空',
+                emailVerifyCode: '请输入格式正确的验证码'
             },
             siteName: {
-                required: "站点名称不能为空"
+                required: '站点名称不能为空'
             },
             siteAddress: {
-                url: "请输入合法的网址"
+                url: '请输入合法的网址'
             },
             siteKeyword: {
-                required: "站点关键词不能为空，例如：ublog,blog,我的博客 等"
+                required: '站点关键词不能为空，例如：ublog,blog,我的博客 等'
             },
             siteAllowComment: {
-                required: "必须选择"
+                required: '必须选择'
             }
         },
         errorElement: 'span',
         errorPlacement: (error, element) => {
-          error.addClass('invalid-feedback');
-          element.closest('.form-group').append(error);
+            error.addClass('invalid-feedback');
+            element.closest('.form-group').append(error);
         },
         highlight: (element, errorClass, validClass) => {
-          $(element).addClass('is-invalid');
+            $(element).addClass('is-invalid');
         },
         unhighlight: (element, errorClass, validClass) => {
-          $(element).removeClass('is-invalid');
+            $(element).removeClass('is-invalid');
         }
     });
 
@@ -131,26 +131,26 @@ $(document).ready(function () {
         },
         messages: {
             userName: {
-                required: "用户名不能为空",
-                minlength: "密码最小长度不能少于4位",
-                maxlength: "密码最大长度不能超过20位"
+                required: '用户名不能为空',
+                minlength: '密码最小长度不能少于4位',
+                maxlength: '密码最大长度不能超过20位'
             },
             userPassword: {
-                required: "密码不能为空",
-                minlength: "密码最小长度不能少于8位",
-                maxlength: "密码最大长度不能超过16位"
+                required: '密码不能为空',
+                minlength: '密码最小长度不能少于8位',
+                maxlength: '密码最大长度不能超过16位'
             }
         },
         errorElement: 'span',
         errorPlacement: (error, element) => {
-          error.addClass('invalid-feedback');
-          element.closest('.form-group').append(error);
+            error.addClass('invalid-feedback');
+            element.closest('.form-group').append(error);
         },
         highlight: (element, errorClass, validClass) => {
-          $(element).addClass('is-invalid');
+            $(element).addClass('is-invalid');
         },
         unhighlight: (element, errorClass, validClass) => {
-          $(element).removeClass('is-invalid');
+            $(element).removeClass('is-invalid');
         }
     });
 
@@ -180,35 +180,35 @@ $(document).ready(function () {
         },
         messages: {
             userEmail: {
-                required: "邮箱不能为空",
-                email: "请输入格式正确的邮箱"
+                required: '邮箱不能为空',
+                email: '请输入格式正确的邮箱'
             },
             verifyCode: {
-                required: "验证码不能为空",
-                emailVerifyCode: "请输入格式正确的验证码"
+                required: '验证码不能为空',
+                emailVerifyCode: '请输入格式正确的验证码'
             },
             newPassword: {
-                required: "密码不能为空",
-                minlength: "密码最小长度不能少于8位",
-                maxlength: "密码最大长度不能超过16位"
+                required: '密码不能为空',
+                minlength: '密码最小长度不能少于8位',
+                maxlength: '密码最大长度不能超过16位'
             },
             confirmNewPassword: {
-                required: "密码不能为空",
-                minlength: "密码最小长度不能少于8位",
-                maxlength: "密码最大长度不能超过16位",
-                confirmPassword: "密码不一致"
+                required: '密码不能为空',
+                minlength: '密码最小长度不能少于8位',
+                maxlength: '密码最大长度不能超过16位',
+                confirmPassword: '密码不一致'
             }
         },
         errorElement: 'span',
         errorPlacement: (error, element) => {
-          error.addClass('invalid-feedback');
-          element.closest('.form-group').append(error);
+            error.addClass('invalid-feedback');
+            element.closest('.form-group').append(error);
         },
         highlight: (element, errorClass, validClass) => {
-          $(element).addClass('is-invalid');
+            $(element).addClass('is-invalid');
         },
         unhighlight: (element, errorClass, validClass) => {
-          $(element).removeClass('is-invalid');
+            $(element).removeClass('is-invalid');
         }
     });
 
@@ -225,25 +225,24 @@ $(document).ready(function () {
         },
         messages: {
             labelName: {
-                required: "标签名称不能为空",
+                required: '标签名称不能为空',
             },
             labelId: {
-                required: "!"
+                required: '!'
             }
         },
         errorElement: 'span',
         errorPlacement: (error, element) => {
-          error.addClass('invalid-feedback');
-          element.closest('.form-group').append(error);
+            error.addClass('invalid-feedback');
+            element.closest('.form-group').append(error);
         },
         highlight: (element, errorClass, validClass) => {
-          $(element).addClass('is-invalid');
+            $(element).addClass('is-invalid');
         },
         unhighlight: (element, errorClass, validClass) => {
-          $(element).removeClass('is-invalid');
+            $(element).removeClass('is-invalid');
         }
     });
-
 
 
     // write_article
@@ -255,20 +254,20 @@ $(document).ready(function () {
         },
         messages: {
             articleTitle: {
-                required: "必须填写标题",
+                required: '必须填写标题',
             }
         },
 
         errorElement: 'span',
         errorPlacement: (error, element) => {
-          error.addClass('invalid-feedback');
-          element.closest('.form-group').append(error);
+            error.addClass('invalid-feedback');
+            element.closest('.form-group').append(error);
         },
         highlight: (element, errorClass, validClass) => {
-          $(element).addClass('is-invalid');
+            $(element).addClass('is-invalid');
         },
         unhighlight: (element, errorClass, validClass) => {
-          $(element).removeClass('is-invalid');
+            $(element).removeClass('is-invalid');
         }
     });
 
@@ -287,25 +286,25 @@ $(document).ready(function () {
         },
         messages: {
             pageTitle: {
-                required: "必须填写标题",
+                required: '必须填写标题',
             },
             pageSortId: {
-                required: "必须填写排序ID，可使用默认值0",
-                digits: "排序ID只能为正整数",
-                range: "排序ID应介于0-10之间"
+                required: '必须填写排序ID，可使用默认值0',
+                digits: '排序ID只能为正整数',
+                range: '排序ID应介于0-10之间'
             }
         },
 
         errorElement: 'span',
         errorPlacement: (error, element) => {
-          error.addClass('invalid-feedback');
-          element.closest('.form-group').append(error);
+            error.addClass('invalid-feedback');
+            element.closest('.form-group').append(error);
         },
         highlight: (element, errorClass, validClass) => {
-          $(element).addClass('is-invalid');
+            $(element).addClass('is-invalid');
         },
         unhighlight: (element, errorClass, validClass) => {
-          $(element).removeClass('is-invalid');
+            $(element).removeClass('is-invalid');
         }
     });
 
@@ -321,21 +320,21 @@ $(document).ready(function () {
         },
         messages: {
             userName: {
-                required: "用户名不能为空",
-                minlength: "密码最小长度不能少于4位",
-                maxlength: "密码最大长度不能超过20位"
+                required: '用户名不能为空',
+                minlength: '密码最小长度不能少于4位',
+                maxlength: '密码最大长度不能超过20位'
             }
         },
         errorElement: 'span',
         errorPlacement: (error, element) => {
-          error.addClass('invalid-feedback');
-          element.closest('.form-group').append(error);
+            error.addClass('invalid-feedback');
+            element.closest('.form-group').append(error);
         },
         highlight: (element, errorClass, validClass) => {
-          $(element).addClass('is-invalid');
+            $(element).addClass('is-invalid');
         },
         unhighlight: (element, errorClass, validClass) => {
-          $(element).removeClass('is-invalid');
+            $(element).removeClass('is-invalid');
         }
     });
 
@@ -358,28 +357,72 @@ $(document).ready(function () {
         },
         messages: {
             siteName: {
-                required: "站点名称不能为空"
+                required: '站点名称不能为空'
             },
             siteAddress: {
-                url: "请输入合法的网址"
+                url: '请输入合法的网址'
             },
             siteKeyword: {
-                required: "站点关键词不能为空，例如：ublog,blog,我的博客 等"
+                required: '站点关键词不能为空，例如：ublog,blog,我的博客 等'
             },
             siteAllowComment: {
-                required: "必须选择"
+                required: '必须选择'
             }
         },
         errorElement: 'span',
         errorPlacement: (error, element) => {
-          error.addClass('invalid-feedback');
-          element.closest('.form-group').append(error);
+            error.addClass('invalid-feedback');
+            element.closest('.form-group').append(error);
         },
         highlight: (element, errorClass, validClass) => {
-          $(element).addClass('is-invalid');
+            $(element).addClass('is-invalid');
         },
         unhighlight: (element, errorClass, validClass) => {
-          $(element).removeClass('is-invalid');
+            $(element).removeClass('is-invalid');
+        }
+    });
+
+
+    // 博客评论框
+    $('#u-comment-form').validate({
+        rules: {
+            'u-bc-name': {
+                required: true,
+                minlength: 2,
+                maxlength: 20
+            },
+            'u-bc-email': {
+                required: true,
+                email: true
+            },
+            'u-bc-content': {
+                required: true
+            }
+        },
+        messages: {
+            'u-bc-name': {
+                required: '请填写您的昵称',
+                minlength: '昵称最小长度不能少于2位',
+                maxlength: '昵称最大长度不能超过20位',
+            },
+            'u-bc-email': {
+                required: '请输入您的邮箱',
+                email: '请检查您的邮箱格式'
+            },
+            'u-bc-content': {
+                required: '评论内容不可为空'
+            }
+        },
+        errorElement: 'span',
+        errorPlacement: (error, element) => {
+            error.addClass('u-invalid-feedback');
+            element.closest('.u-form-group').append(error);
+        },
+        highlight: (element, errorClass, validClass) => {
+            $(element).addClass('u-is-invalid');
+        },
+        unhighlight: (element, errorClass, validClass) => {
+            $(element).removeClass('u-is-invalid');
         }
     });
 

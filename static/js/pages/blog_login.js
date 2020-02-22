@@ -8,11 +8,11 @@ $('#blog-login-submit').click(() => {
         is_rm = '1'
     }
     if (is_valid) {
-        $.post('/login/',{
+        $.post('/login/', {
             userName: $('#user-name').val(),
             userPassword: $('#user-password').val(),
-            rememberMe : is_rm
-        }, (data)=> {
+            rememberMe: is_rm
+        }, (data) => {
             if (data['status'] === 'success') {
                 $('.login-box').fadeOut(240, () => {
                     Swal.fire({
@@ -22,7 +22,7 @@ $('#blog-login-submit').click(() => {
                         timer: 2000,
                         showConfirmButton: false,
                         onClose: () => {
-                            $(window).attr('location','/admin/');
+                            $(window).attr('location', '/admin/');
                         }
                     });
                 });
@@ -42,8 +42,8 @@ $('#blog-login-submit').click(() => {
 });
 
 // 监听回车键
-$(document).keyup(function(event){
-   if(event.keyCode === 13){
-       $('#blog-login-submit').trigger("click");
-   }
+$(document).keyup(function (event) {
+    if (event.keyCode === 13) {
+        $('#blog-login-submit').trigger("click");
+    }
 });

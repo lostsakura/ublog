@@ -5,14 +5,14 @@ $(() => {
     parentTagActive('ublog-tab-mp');
 });
 
-function deleteItems(){
+function deleteItems() {
     let delete_list = [];
-     $.each($('.bp-checkbox:checked'), function () {
-         delete_list.push($(this).val());
-     });
-     let delete_list_json = JSON.stringify(delete_list);
+    $.each($('.bp-checkbox:checked'), function () {
+        delete_list.push($(this).val());
+    });
+    let delete_list_json = JSON.stringify(delete_list);
 
-     window.parent.Swal.fire({
+    window.parent.Swal.fire({
         icon: 'warning',
         title: '您确定要删除选中的文章么？',
         text: '删除之后不可恢复，请谨慎选择',

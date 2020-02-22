@@ -22,7 +22,7 @@
     <ul class="u-widget-list">
       {% if request.user.is_authenticated %}
         <li><a href="/admin/" class="u-link">管理后台</a></li>
-        <li><a class="u-link">注销</a></li>
+        <li><a href="#" class="u-link ublog-logout-btn">注销</a></li>
       {% else %}
         <li><a href="/login" class="u-link">登录</a></li>
       {% endif %}

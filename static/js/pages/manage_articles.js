@@ -6,30 +6,31 @@ $(() => {
 });
 
 // 获取当前url中的参数
-function getQueryVariable(variable)
-{
-   let query = window.location.search.substring(1);
-   let vars = query.split("&");
-   for (let i=0;i<vars.length;i++) {
-           let pair = vars[i].split("=");
-           if(pair[0] === variable){return pair[1];}
-   }
-   return false;
+function getQueryVariable(variable) {
+    let query = window.location.search.substring(1);
+    let vars = query.split("&");
+    for (let i = 0; i < vars.length; i++) {
+        let pair = vars[i].split("=");
+        if (pair[0] === variable) {
+            return pair[1];
+        }
+    }
+    return false;
 }
 
 
 function changeArticleListURL(action_type) {
-    window.location.href = '/admin/manage-articles?list=' + action_type +'&page=1'
+    window.location.href = '/admin/manage-articles?list=' + action_type + '&page=1'
 }
 
-function deleteItems(){
+function deleteItems() {
     let delete_list = [];
-     $.each($('.ba-checkbox:checked'), function () {
-         delete_list.push($(this).val());
-     });
-     let delete_list_json = JSON.stringify(delete_list);
+    $.each($('.ba-checkbox:checked'), function () {
+        delete_list.push($(this).val());
+    });
+    let delete_list_json = JSON.stringify(delete_list);
 
-     window.parent.Swal.fire({
+    window.parent.Swal.fire({
         icon: 'warning',
         title: '您确定要删除选中的文章么？',
         text: '删除之后不可恢复，请谨慎选择',
@@ -52,7 +53,7 @@ function deleteItems(){
                         showConfirmButton: false,
                         onClose: () => {
                             $(window).attr('location',
-                                '/admin/manage-articles?list=' + getQueryVariable('list') +'&page=1');
+                                '/admin/manage-articles?list=' + getQueryVariable('list') + '&page=1');
                         }
                     });
                 } else if (data['status'] === 'error') {

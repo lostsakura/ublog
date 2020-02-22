@@ -38,6 +38,8 @@ urlpatterns = [
     re_path('article/(?P<article_id>[1-9][0-9]*)/', v.blog_article),
     # 博客独立页面
     re_path('(?P<page_id>[1-9][0-9]*)/', v.blog_page),
+    # 提交评论
+    path('submit-comment/', v.blog_comment),
 
 
     # 后台管理
