@@ -1,0 +1,31 @@
+<aside class="col-md-3 offset-md-1 d-none d-md-block">
+  <section class="u-widget">
+    <h3 class="u-widget-title">最新文章</h3>
+    <ul class="u-widget-list">
+      {% for ra_item in recent_article %}
+        <li><a class="u-link" href="/article/{{ ra_item.id }}">{{ ra_item.title }}</a></li>
+      {% endfor %}
+
+    </ul>
+  </section>
+  <section class="u-widget">
+    <h3 class="u-widget-title">分类标签</h3>
+    <ul class="u-widget-list">
+      {% for label_item in label_list %}
+        <li><a href="/label/lid_{{ label_item.id }}/1" class="u-link">{{ label_item.label_name }}</a></li>
+      {% endfor %}
+
+    </ul>
+  </section>
+  <section class="u-widget">
+    <h3 class="u-widget-title">其他</h3>
+    <ul class="u-widget-list">
+      {% if request.user.is_authenticated %}
+        <li><a href="/admin/" class="u-link">管理后台</a></li>
+        <li><a class="u-link">注销</a></li>
+      {% else %}
+        <li><a href="/login" class="u-link">登录</a></li>
+      {% endif %}
+    </ul>
+  </section>
+</aside>

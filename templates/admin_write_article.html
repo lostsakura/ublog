@@ -31,7 +31,7 @@
           <div class="card">
             <form role="form" id="write-article-form">
               <div class="card-body" style="min-height: 600px">
-                <input type="text" value="{{ ba_item.id|default:0}}" id="article-id" style="display: none">
+                <input type="text" value="{{ ba_item.id|default:0 }}" id="article-id" style="display: none">
 
                 <div class="form-group">
                   <input type="text" class="form-control form-control-lg" id="article-title" name="articleTitle"
@@ -48,7 +48,7 @@
                   <div class="col-md-3">
                     <select class="form-control" id="article-is-private">
                       <option value="0" {% if not ba_item.is_private %}selected{% endif %}>所有人可见</option>
-                      <option value="1"{% if ba_item.is_private %}selected{% endif %}>仅自己可见</option>
+                      <option value="1" {% if ba_item.is_private %}selected{% endif %}>仅自己可见</option>
                     </select>
                   </div>
                 </div>
@@ -59,7 +59,8 @@
                     <select class="form-control" id="article-label">
                       <option value="0">无</option>
                       {% for bl_item in bl_list %}
-                        <option value="{{ bl_item.id }}" {% if ba_item.label == bl_item.label_name %}selected{% endif %}>
+                        <option value="{{ bl_item.id }}"
+                                {% if ba_item.label == bl_item.label_name %}selected{% endif %}>
                           {{ bl_item.label_name }}
                         </option>
                       {% endfor %}
@@ -83,9 +84,9 @@
                   </div>
                 </div>
               </div>
-            {% if ba_item %}
-              <div id="article-sn-content" style="display: none">{{ ba_item.content|safe }}</div>
-            {% endif %}
+              {% if ba_item %}
+                <div id="article-sn-content" style="display: none">{{ ba_item.content|safe }}</div>
+              {% endif %}
             </form>
           </div>
         </div>

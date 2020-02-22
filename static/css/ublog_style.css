@@ -1,3 +1,4 @@
+/* 页头样式 */
 .u-header {
     padding-top: 35px;
     padding-bottom: 10px;
@@ -24,6 +25,7 @@
     list-style: none;
     padding: 0;
 }
+
 .u-nav-item {
     border-bottom: 3px inherit solid;
     list-style: none;
@@ -40,9 +42,12 @@
 
 .u-nav-active {
     border-bottom: 3px #2F3242 solid;
-
 }
 
+/* 页头样式end */
+
+
+/* 列表标题 */
 .u-label-desc {
     display: block;
     font-size: 14px;
@@ -50,6 +55,10 @@
     margin-top: 20px;
 }
 
+/* 列表标题end  */
+
+
+/* 博客列表文章样式end */
 .u-list-article {
     padding: 15px 0 25px 0;
     border-bottom: 1px solid #eeeeee;
@@ -61,10 +70,12 @@
     padding: 0;
     margin: 0;
 }
+
 .u-list-article-desc-nav > li {
     border-right: 1px solid #5A5C6C;
     padding-right: 7px;
 }
+
 .u-list-article-desc-nav > li:last-child {
     border: none;
 }
@@ -86,10 +97,13 @@
     text-decoration: none;
 }
 
+/* 博客列表文章样式end */
+
+
+/* 分页样式 */
 ol.u-page-navigator {
     list-style: none;
     text-align: center;
-
 }
 
 ol.u-page-navigator > li {
@@ -102,8 +116,17 @@ ol.u-page-navigator > li {
 ol.u-page-navigator > li:hover {
     background-color: #e8e8e8;
 }
+
 ol.u-page-navigator > li.u-page-navigator-active {
     background-color: #e8e8e8;
+}
+
+/* 分页样式end */
+
+
+/* 侧边栏样式 */
+.u-widget-title {
+    margin: 18px 0 5px;
 }
 
 section.u-widget {
@@ -123,9 +146,26 @@ ul.u-widget-list > li {
     color: #3354aa;
 }
 
+/* 侧边栏样式end */
+
+
+/* 文章样式 */
+.u-article {
+    padding: 15px 0;
+}
+.u-article-content {
+    margin: 15px 0;
+}
+
+/* 文章样式end */
+
+
+/* 页脚样式 */
 .u-footer {
     padding: 42px 0;
     text-align: center;
     color: #5A5C6C;
     font-size: 14px;
 }
+
+/* 页脚样式end */

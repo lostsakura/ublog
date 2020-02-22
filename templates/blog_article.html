@@ -1,0 +1,22 @@
+<!-- 导入基础文件 -->
+{% extends "blog_base.html" %}
+
+<!-- main-content 主体 -->
+{% block content %}
+  <section class="col-md-8">
+    <article class="u-article">
+      <h1 class="u-article-title">{{ blog_article.title }}</h1>
+      <ul class="u-list-article-desc-nav">
+        <li>作者:{{ user_setting.username }}</li>
+        <li>时间:{{ blog_article.created_time }}</li>
+        <li>标签:<a class="u-link">{{ blog_article.label|default:'默认标签' }}</a></li>
+      </ul>
+      <div class="u-article-content">
+        {{ blog_article.content|safe }}
+      </div>
+    </article>
+  </section>
+
+  {% include 'blog_aside.html' %}
+
+{% endblock %}

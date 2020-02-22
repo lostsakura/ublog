@@ -77,11 +77,15 @@ def blog_list(request, category='page', lid=1, page_num=1):
     show_type = category
     ba_list = None
     label_name = None
+    is_login = False
+
+    if request.user.is_authenticated:
+        is_login = True
     if category == 'page':
-        if request.user.is_authenticated:
-            ba_list = BlogArticle.objects.filter(is_draft=False).order_by('created_time')
+        if is_login:
+            ba_list = BlogArticle.objects.filter(is_draft=False).order_by('-created_time')
         else:
-            ba_list = BlogArticle.objects.filter(is_draft=False, is_private=False).order_by('created_time')
+            ba_list = BlogArticle.objects.filter(is_draft=False, is_private=False).order_by('-created_time')
     elif category == 'label':
         show_type = '分类标签'
         try:
@@ -91,13 +95,14 @@ def blog_list(request, category='page', lid=1, page_num=1):
         if ln is not None:
             label_name = ln
             try:
-                if request.user.is_authenticated:
-                    ba_list = BlogArticle.objects.filter(label=ln, is_draft=False).order_by('created_time')
+                if is_login:
+                    ba_list = BlogArticle.objects.filter(label=ln, is_draft=False).order_by('-created_time')
                 else:
-                    ba_list = BlogArticle.objects.filter(label=ln, is_draft=False, is_private=False)\
-                        .order_by('created_time')
+                    ba_list = BlogArticle.objects.filter(label=ln, is_draft=False, is_private=False) \
+                        .order_by('-created_time')
             except Exception as e:
                 ba_list = None
+    recent_article = BlogArticle.objects.filter(is_draft=False, is_private=False).order_by('-created_time')[:5]
     # 分页处理
     table_list = Paginator(ba_list, 7)
     total_page = table_list.num_pages
@@ -105,12 +110,28 @@ def blog_list(request, category='page', lid=1, page_num=1):
     return render(request, 'blog_list.html', {'blog_setting': bs,
                                               'user_setting': us,
                                               'label_list': bl,
+                                              'recent_article': recent_article,
                                               'article_list': table_list.page(page_num),
                                               'total_page': total_page,
                                               'show_type': show_type,
                                               'page_num': page_num,
                                               'lid': lid,
                                               'label_name': label_name})
+
+
+# 文章详情
+def blog_article(request, article_num):
+    bs = BlogSettings.objects.all().order_by('id').first()
+    us = BlogUser.objects.all().order_by('id').first()
+    bl = BlogLabel.objects.all().order_by('id')
+    ba = BlogArticle.objects.get(id=article_num)
+    recent_article = BlogArticle.objects.filter(is_draft=False, is_private=False).order_by('-created_time')[:5]
+    return render(request, 'blog_article.html', {'blog_setting': bs,
+                                                 'user_setting': us,
+                                                 'label_list': bl,
+                                                 'blog_article': ba,
+                                                 'recent_article': recent_article,
+                                                 'total_page': 1})
 
 
 # 后台
@@ -343,13 +364,13 @@ def manage_articles(request):
 
         if list_type == 'public':
             section_title = section_title + ' - 公开'
-            ba_list = BlogArticle.objects.filter(is_private=False, is_draft=False).order_by('id')
+            ba_list = BlogArticle.objects.filter(is_private=False, is_draft=False).order_by('-id')
         elif list_type == 'private':
             section_title = section_title + ' - 隐私'
-            ba_list = BlogArticle.objects.filter(is_private=True, is_draft=False).order_by('id')
+            ba_list = BlogArticle.objects.filter(is_private=True, is_draft=False).order_by('-id')
         elif list_type == 'draft':
             section_title = section_title + ' - 草稿'
-            ba_list = BlogArticle.objects.filter(is_draft=True).order_by('id')
+            ba_list = BlogArticle.objects.filter(is_draft=True).order_by('-id')
         # 分页处理
         table_list = Paginator(ba_list, 10)
         total_page = table_list.num_pages
