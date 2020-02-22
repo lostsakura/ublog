@@ -128,6 +128,8 @@ def blog_article(request, article_id):
     us = BlogUser.objects.all().order_by('id').first()
     bl = BlogLabel.objects.all().order_by('id')
     ba = BlogArticle.objects.get(id=article_id)
+    ba.clicks = int(ba.clicks) + 1
+    ba.save()
     bp = BlogPage.objects.filter(is_draft=False).order_by('sort_id')
     recent_article = BlogArticle.objects.filter(is_draft=False, is_private=False).order_by('-created_time')[:5]
     return render(request, 'blog_article.html', {'blog_setting': bs,

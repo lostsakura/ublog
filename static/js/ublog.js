@@ -51,7 +51,7 @@ function submitComment() {
             if (data['status'] === 'success') {
                 Swal.fire({
                     toast: true,
-                    position: 'center',
+                    position: 'top-end',
                     icon: 'success',
                     title: '提交成功',
                     text: data['info'],

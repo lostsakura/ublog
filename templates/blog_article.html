@@ -8,9 +8,11 @@
       <span class="u-article-id">{{ blog_article.id }}</span>
       <h1 class="u-article-title">{{ blog_article.title }}</h1>
       <ul class="u-list-article-desc-nav">
-        <li>作者:{{ user_setting.username }}</li>
-        <li>时间:{{ blog_article.created_time }}</li>
-        <li>标签:<a class="u-link">{{ blog_article.label|default:'默认标签' }}</a></li>
+        <li>作者：{{ user_setting.username }}</li>
+        <li>时间：{{ blog_article.created_time }}</li>
+        <li>阅读：{{ blog_article.clicks }}</li>
+        <li>喜欢：{{ blog_article.likes }}</li>
+        <li>标签：<a class="u-link">{{ blog_article.label|default:'默认标签' }}</a></li>
       </ul>
       <div class="u-article-content">
         {{ blog_article.content|safe }}
