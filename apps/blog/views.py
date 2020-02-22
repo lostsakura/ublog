@@ -74,6 +74,7 @@ def blog_list(request, category='page', lid=1, page_num=1):
     bs = BlogSettings.objects.all().order_by('id').first()
     us = BlogUser.objects.all().order_by('id').first()
     bl = BlogLabel.objects.all().order_by('id')
+    bp = BlogPage.objects.filter(is_draft=False).order_by('sort_id')
     show_type = category
     ba_list = None
     label_name = None
@@ -110,28 +111,49 @@ def blog_list(request, category='page', lid=1, page_num=1):
     return render(request, 'blog_list.html', {'blog_setting': bs,
                                               'user_setting': us,
                                               'label_list': bl,
+                                              'blog_page': bp,
                                               'recent_article': recent_article,
                                               'article_list': table_list.page(page_num),
                                               'total_page': total_page,
                                               'show_type': show_type,
                                               'page_num': page_num,
+                                              'page_id': 0,
                                               'lid': lid,
                                               'label_name': label_name})
 
 
 # 文章详情
-def blog_article(request, article_num):
+def blog_article(request, article_id):
     bs = BlogSettings.objects.all().order_by('id').first()
     us = BlogUser.objects.all().order_by('id').first()
     bl = BlogLabel.objects.all().order_by('id')
-    ba = BlogArticle.objects.get(id=article_num)
+    ba = BlogArticle.objects.get(id=article_id)
+    bp = BlogPage.objects.filter(is_draft=False).order_by('sort_id')
     recent_article = BlogArticle.objects.filter(is_draft=False, is_private=False).order_by('-created_time')[:5]
     return render(request, 'blog_article.html', {'blog_setting': bs,
                                                  'user_setting': us,
                                                  'label_list': bl,
+                                                 'blog_page': bp,
                                                  'blog_article': ba,
                                                  'recent_article': recent_article,
                                                  'total_page': 1})
+
+
+# 独立页面
+def blog_page(request, page_id):
+    bs = BlogSettings.objects.all().order_by('id').first()
+    us = BlogUser.objects.all().order_by('id').first()
+    bp = BlogPage.objects.filter(is_draft=False).order_by('sort_id')
+    try:
+        bpi = BlogPage.objects.get(id=page_id)
+    except Exception as e:
+        bpi = None
+    if bpi is None:
+        return page_not_found(request)
+    return render(request, 'blog_page.html', {'blog_setting': bs,
+                                              'user_setting': us,
+                                              'blog_page': bp,
+                                              'blog_page_item': bpi})
 
 
 # 后台

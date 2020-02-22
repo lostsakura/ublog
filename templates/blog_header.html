@@ -6,8 +6,12 @@
     </div>
     <div class="col-12">
       <ul class="u-nav">
-        <li class="u-nav-item u-nav-active"><a href="/" class="u-nav-link">首页</a></li>
-        <li class="u-nav-item"><a href="#" class="u-nav-link">归类</a></li>
+        <li class="u-nav-item {% if page_id == 0 %}u-nav-active{% endif %}"><a href="/" class="u-nav-link">首页</a></li>
+        {% for bp_item in blog_page %}
+          <li class="u-nav-item {% if blog_page_item.id == bp_item.id %}u-nav-active{% endif %}">
+            <a href="/{{ bp_item.id }}/" class="u-nav-link">{{ bp_item.title }}</a>
+          </li>
+        {% endfor %}
       </ul>
     </div>
   </div>

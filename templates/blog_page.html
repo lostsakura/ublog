@@ -4,5 +4,11 @@
 
 <!-- main-content 主体 -->
 {% block content %}
-
+  <div class="col-12 u-page">
+    <h1 class="u-page-title">{{ blog_page_item.title }}</h1>
+    <div class="u-page-content">
+      {{ blog_page_item.content|safe }}
+    </div>
+    <span class="u-page--desc">{{ blog_page_item.update_time }}</span>
+  </div>
 {% endblock %}

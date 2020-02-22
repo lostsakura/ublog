@@ -47,6 +47,14 @@
 /* 页头样式end */
 
 
+/* main-content */
+.u-content {
+    border-bottom: 1px solid #eeeeee;
+}
+/* main-content-end*/
+
+
+
 /* 列表标题 */
 .u-label-desc {
     display: block;
@@ -153,11 +161,35 @@ ul.u-widget-list > li {
 .u-article {
     padding: 15px 0;
 }
+
 .u-article-content {
     margin: 15px 0;
 }
 
 /* 文章样式end */
+
+
+/* 独立页面样式 */
+.u-page {
+    padding: 30px 15px;
+}
+
+.u-page-title {
+    font-size: .9em;
+}
+
+.u-page-content {
+    margin: 30px 0;
+}
+
+.u-page--desc {
+    display: block;
+    margin: 10px 0;
+    color: #5A5C6C;
+    font-size: 12px;
+}
+
+/* 独立页面样式end */
 
 
 /* 页脚样式 */

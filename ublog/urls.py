@@ -24,10 +24,10 @@ from apps.blog.tools import get_labels
 
 from blog import views as v
 urlpatterns = [
-    path('adminx/', admin.site.urls),
-
+    # path('adminx/', admin.site.urls),
     # 初始化网站
     path('start/', v.blog_start),
+
 
     # index页面
     path('', v.blog_index),
@@ -35,7 +35,10 @@ urlpatterns = [
     re_path('(?P<category>label)/lid_(?P<lid>[1-9][0-9]*)/(?P<page_num>[1-9][0-9]*)/', v.blog_list),
     re_path('(?P<category>page)/(?P<page_num>[1-9][0-9]*)/', v.blog_list),
     # 博客文章详情页面
-    re_path('article/(?P<article_num>[1-9][0-9]*)/', v.blog_article),
+    re_path('article/(?P<article_id>[1-9][0-9]*)/', v.blog_article),
+    # 博客独立页面
+    re_path('(?P<page_id>[1-9][0-9]*)/', v.blog_page),
+
 
     # 后台管理
     path('admin/', v.blog_admin),
