@@ -72,7 +72,7 @@
 
             <div class="info-box-content">
               <span class="info-box-text">评论</span>
-              <span class="info-box-number">{{ comment_count }}</span>
+              <span class="info-box-number">{{ all_comment_count }}</span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -121,9 +121,28 @@
               <h5 class="card-title">最近得到的回复</h5>
             </div>
             <!-- /.card-header -->
-            <div class="card-body">
+            <div class="card-body p-0">
+              <table class="table">
+                <thead>
+                <tr>
+                  <th>评论</th>
+                  <th style="width: 100px">游客</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for rcl_item in recent_comments_list %}
+                  <tr>
+                    <td>{{ rcl_item.content }}</td>
+                    <td>{{ rcl_item.author }}</td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
             </div>
             <!-- ./card-body -->
+            {% if recent_comment_count >= 7 %}
+              <div class="card-footer"><a href="/admin/manage-comments?list=under_review&page=1">查看更多</a></div>
+            {% endif %}
           </div>
           <!-- /.card -->
         </div>

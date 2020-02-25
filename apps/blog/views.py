@@ -286,13 +286,17 @@ def admin_index(request):
     section_title = "系统概要"
     article_count = BlogArticle.objects.filter(is_draft=False).count()
     draft_count = BlogArticle.objects.filter(is_draft=True).count()
-    comment_count = ArticleComment.objects.count()
+    all_comment_count = ArticleComment.objects.count()
     recent_articles_list = BlogArticle.objects.filter(is_draft=False).order_by('created_time')[:7]
+    recent_comments_list = ArticleComment.objects.filter(is_passed=False).order_by('-id')[:7]
+    recent_comment_count = ArticleComment.objects.filter(is_passed=False).count()
     return render(request, 'admin_index.html', {'section_title': section_title,
                                                 'article_count': article_count,
                                                 'draft_count': draft_count,
-                                                'comment_count': comment_count,
-                                                'recent_articles_list': recent_articles_list})
+                                                'all_comment_count': all_comment_count,
+                                                'recent_comment_count': recent_comment_count,
+                                                'recent_articles_list': recent_articles_list,
+                                                'recent_comments_list': recent_comments_list})
 
 
 # 文章编辑
