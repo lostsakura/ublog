@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, render_to_response
 
 from blog.forms import BlogStartForm, EmailForm, LoginForm, RecoverPasswordForm, ManageLabelsForm, DeleteResourceForm, \
-    ArticleWriteForm, PageWriteForm, UserSettingsForm, SystemSettingsForm, SubmitCommentForm
+    ArticleWriteForm, PageWriteForm, UserSettingsForm, SystemSettingsForm, SubmitCommentForm, BatchUpdateResourceForm
 from blog.tools import send_verify_email, verify_email, get_blog_settings, zero_transition, batch_delete
 
 from blog.models import BlogSettings, BlogUser, BlogLabel, BlogArticle, BlogPage, ArticleComment
@@ -410,7 +410,6 @@ def manage_articles(request):
         page_num = request.GET['page']
         list_type = request.GET['list']
         ba_list = None
-
         if list_type == 'public':
             section_title = section_title + ' - 公开'
             ba_list = BlogArticle.objects.filter(is_private=False, is_draft=False).order_by('-id')
@@ -441,7 +440,21 @@ def manage_pages(request):
 
 # 评论管理
 def manage_comments(request):
-    return render(request, 'admin_manage_comments.html')
+    if request.method == 'GET':
+        page_num = request.GET['page']
+        list_type = request.GET['list']
+        ac_list = None
+        if list_type == 'passed':
+            ac_list = ArticleComment.objects.filter(is_passed=True).order_by('-id')
+        elif list_type == 'under_review':
+            ac_list = ArticleComment.objects.filter(is_passed=False).order_by('-id')
+        # 分页处理
+        table_list = Paginator(ac_list, 5)
+        total_page = table_list.num_pages
+        return render(request, 'admin_manage_comments.html', {'list_type': list_type,
+                                                              'ac_list': table_list.page(page_num),
+                                                              'page_num': page_num,
+                                                              'total_page': total_page})
 
 
 # 标签管理
@@ -614,6 +627,30 @@ def tool_get_verify_code(request):
 
 
 # 删除资源
+def updateResource(request):
+    resp = {'status': None, 'info': None}
+    if request.method == 'POST':
+        burf = BatchUpdateResourceForm(request.POST)
+        if burf.is_valid():
+            bur_list = json.loads(request.POST['resourceId'])
+            print(bur_list)
+            rt = request.POST['resourceType']
+            rp = request.POST['resourceParameter']
+            if bur_list is not None:
+                for item in bur_list:
+                    if rt == 'article_comment' and rp == 'is_passed':
+                        ac = ArticleComment.objects.get(id=str(item))
+                        ac.is_passed = not ac.is_passed
+                        ac.save()
+                        resp['status'] = 'success'
+                        resp['info'] = '状态更新成功'
+                return JsonResponse(resp)
+    resp['status'] = 'error'
+    resp['info'] = '提交的信息有误，请检查后重试'
+    return JsonResponse(resp)
+
+
+# 删除资源
 def deleteResource(request):
     if request.method == 'POST':
         resp = {'status': None, 'info': None}
@@ -633,10 +670,11 @@ def deleteResource(request):
                     resp['status'] = 'error'
                     resp['info'] = '删除的项目不存在，请检查后重试'
                     return JsonResponse(resp)
-            elif request.POST['resourceType'] == 'blog_article' or request.POST['resourceType'] == 'blog_page':
+            elif request.POST['resourceType'] == 'blog_article' \
+                    or request.POST['resourceType'] == 'blog_page' \
+                    or request.POST['resourceType'] == 'article_comment':
                 return JsonResponse(batch_delete(resource_type=request.POST['resourceType'],
                                                  resource_ids=request.POST['resourceId']))
-
         resp['status'] = 'error'
         resp['info'] = '提交的删除信息有误，请检查后重试'
         return JsonResponse(resp)

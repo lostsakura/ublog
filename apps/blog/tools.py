@@ -76,27 +76,20 @@ def zero_transition(num):
 def batch_delete(resource_type, resource_ids):
     resp = {'status': None, 'info': None}
     delete_list = json.loads(resource_ids)
-    for item in delete_list:
-        bi = None
-        try:
-            if resource_type == 'blog_article':
-                bi = BlogArticle.objects.get(id=str(item))
-            elif resource_type == 'blog_page':
-                bi = BlogPage.objects.get(id=str(item))
-            elif resource_type == 'blog_comment':
-                bi = ArticleComment.objects.get(id=str(item))
-        except Exception as e:
+    if delete_list is not None:
+        for item in delete_list:
             bi = None
-        if bi is not None:
-            bi.delete()
+            try:
+                if resource_type == 'blog_article':
+                    bi = BlogArticle.objects.get(id=str(item))
+                elif resource_type == 'blog_page':
+                    bi = BlogPage.objects.get(id=str(item))
+                elif resource_type == 'article_comment':
+                    bi = ArticleComment.objects.get(id=str(item))
+            except Exception as e:
+                bi = None
+            if bi is not None:
+                bi.delete()
     resp['status'] = 'success'
     resp['info'] = '已删除'
     return resp
-
-
-# 获取label组
-def get_labels():
-    bln_list = BlogLabel.objects.values('label_name')
-    bln_list_s = []
-    for bln_item in bln_list:
-        bln_list_s.append(bln_item['label_name'])

@@ -55,7 +55,7 @@ function submitComment() {
                     icon: 'success',
                     title: '提交成功',
                     text: data['info'],
-                    timer: 3000,
+                    timer: 2400,
                     showConfirmButton: false,
                     onClose: () => {
                         location.reload();
@@ -68,7 +68,7 @@ function submitComment() {
                     icon: 'error',
                     title: '提交失败',
                     text: data['info'],
-                    timer: 2600,
+                    timer: 2000,
                     showConfirmButton: false,
                 });
             }

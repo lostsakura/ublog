@@ -18,11 +18,12 @@ function getQueryVariable(variable) {
     return false;
 }
 
-
+// 切换分类列表
 function changeArticleListURL(action_type) {
     window.location.href = '/admin/manage-articles?list=' + action_type + '&page=1'
 }
 
+// 批量删除
 function deleteItems() {
     let delete_list = [];
     $.each($('.ba-checkbox:checked'), function () {

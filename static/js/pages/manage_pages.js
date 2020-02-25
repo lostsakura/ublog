@@ -14,7 +14,7 @@ function deleteItems() {
 
     window.parent.Swal.fire({
         icon: 'warning',
-        title: '您确定要删除选中的文章么？',
+        title: '您确定要删除选中的页面么？',
         text: '删除之后不可恢复，请谨慎选择',
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',

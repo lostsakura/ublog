@@ -56,7 +56,15 @@ class DeleteResourceForm(forms.Form):
     resourceId = forms.CharField(required=True)
     resourceType = forms.ChoiceField(required=True, choices=(('blog_label', 'blog_label'),
                                                              ('blog_article', 'blog_article'),
-                                                             ('blog_page', 'blog_page')))
+                                                             ('blog_page', 'blog_page'),
+                                                             ('article_comment', 'article_comment')))
+
+
+# 批量更新资源表单
+class BatchUpdateResourceForm(forms.Form):
+    resourceId = forms.CharField(required=True)
+    resourceParameter = forms.CharField(required=True)
+    resourceType = forms.CharField(required=True)
 
 
 # 文章编辑表单

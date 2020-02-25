@@ -1,6 +1,39 @@
 <!-- 导入基础文件 -->
 {% extends "admin_frame.html" %}
 
+{% block customizedCss %}
+  <style>
+    .u-ac-item:hover {
+      background-color: #e8e8e8;
+    }
+
+    .u-ac-item:hover ul.u-ac-link-list {
+      opacity: 1;
+
+    }
+
+    .u-ac-link-list {
+      opacity: 0;
+      padding: 10px 0;
+      margin: 0;
+    }
+
+    .u-ac-link-list > li {
+      display: inline-block;
+      padding: 2px 10px 2px 0;
+    }
+
+    .u-ac-link {
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .u-ac-link:hover {
+      border-bottom: 1px solid #000000;
+    }
+  </style>
+{% endblock %}
+
 <!-- body -->
 {% block body %}
   <body style="background-color: inherit">
@@ -17,6 +50,108 @@
     </div><!-- /.container-fluid -->
   </div>
   <!-- /.content-header -->
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <!-- Info boxes -->
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <div class="btn-group btn-group-toggle">
+                <button class="btn btn-secondary {% if list_type == 'passed' %}active{% endif %}"
+                        onclick="changeArticleListURL('passed')">已通过
+                </button>
+                <button class="btn btn-secondary {% if list_type == 'under_review' %}active{% endif %}"
+                        onclick="changeArticleListURL('under_review')">待审核
+                </button>
+              </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body p-0">
+              <table class="table">
+                <thead class="table">
+                <tr>
+                  <th style="width: 60px"></th>
+                  <th style="width: 160px">作者/邮箱</th>
+                  <th>内容</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for ac_item in ac_list %}
+                  <tr class="u-ac-item">
+                    <td><input type="checkbox" class="ac-checkbox" value="{{ ac_item.id }}"></td>
+                    <td>
+                      <span style="display: block">{{ ac_item.author }}</span>
+                      <span style="display: block;font-size: 12px;color: #2F3242">
+                        <a href="mailto:{{ ac_item.email }}">{{ ac_item.email }}</a></span>
+                    </td>
+                    <td>
+                      <span style="color: #5A5C6C;display: block;font-size: .8em">
+                        评论  >> {{ ac_item.article.title }}
+                      </span>
+                      <span style="display: block;font-size: 1em">
+                        {{ ac_item.content }}
+                      </span>
+                      <sapn>
+                        <ul class="u-ac-link-list">
+                          {% if list_type == 'under_review' %}
+                            <li><a class="u-ac-link" style="color: #007bff;"
+                                   onclick="batchOperation('update', 'no', '{{ ac_item.id }}')">通过</a></li>
+                          {% endif %}
+                          {% if list_type == 'passed' %}
+                            <li><a class="u-ac-link" style="color: #ffc107"
+                                   onclick="batchOperation('update', 'no', '{{ ac_item.id }}')">待审核</a></li>
+                          {% endif %}
+                          <li><a class="u-ac-link" style="color: #dd3333;"
+                                 onclick="batchOperation('delete', 'no', '{{ ac_item.id }}')">删除</a></li>
+                        </ul>
+                      </sapn>
+                    </td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer clearfix">
+              <div class="btn-group btn-group-sm">
+                <button type="button" class="btn btn-warning">选中项</button>
+                <button type="button" class="btn btn-warning dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                  <span class="sr-only">Toggle Dropdown</span>
+                  <div class="dropdown-menu" role="menu">
+                    {% if list_type == 'under_review' %}
+                      <a class="dropdown-item" onclick="batchOperation('update', 'yes', '0')">通过</a>
+                    {% endif %}
+                    {% if list_type == 'passed' %}
+                      <a class="dropdown-item" onclick="batchOperation('update', 'yes', '0')">审核</a>
+                    {% endif %}
+                    <a class="dropdown-item" onclick="batchOperation('delete', 'yes', '0')">删除</a>
+
+                  </div>
+                </button>
+              </div>
+              {% if total_page != 1 %}
+                <ul class="pagination pagination-sm m-0 float-right">
+                  {% if ac_list.has_previous %}
+                    <li class="page-item">
+                      <a class="page-link"
+                         href="/admin/manage-comments?list={{ list_type }}&page={{ page_num|add:-1 }}">&laquo;</a>
+                    </li>
+                  {% endif %}
+                  <li class="page-item"><a class="page-link" href="#">{{ page_num }}/{{ total_page }}</a></li>
+                  {% if ac_list.has_next %}
+                    <li class="page-item">
+                      <a class="page-link" href="/admin/manage-comments?list={{ list_type }}&page={{ page_num|add:1 }}">&raquo;</a>
+                    </li>
+                  {% endif %}
+                </ul>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
   </body>
 {% endblock %}
 
