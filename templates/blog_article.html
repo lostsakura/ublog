@@ -17,6 +17,11 @@
       <div class="u-article-content">
         {{ blog_article.content|safe }}
       </div>
+      <div class="u-article-tools">
+        <span class="u-like-btn">
+        <a href="#">赞&nbsp;&nbsp;<i class="far fa-heart"></i></a>
+        </span>
+      </div>
     </article>
     {% include 'blog_comment.html' %}
   </section>

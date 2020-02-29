@@ -1,5 +1,16 @@
-{% if blog_setting.allow_comment %}
-  <div class="u-comment">
+<div class="u-comment">
+  {% if ac_list %}
+    <h3 class="u-comment-title">共有 {{ ac_list_count }} 条评论</h3>
+    <div class="u-passed-comments">
+      {% for ac_item in ac_list %}
+        <div class="u-passed-comments-item">
+          <p>{{ ac_item.content }}</p>
+          <span class="u-passed-comments-desc">{{ ac_item.author }}(email: {{ ac_item.email }})</span>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  {% if blog_setting.allow_comment %}
     <h3 class="u-comment-title">添加新评论</h3>
     <form role="form" id="u-comment-form">
       <div class="u-form-group">
@@ -17,5 +28,5 @@
       <button class="u-bc-button" type="button" id="u-bc-submit" onclick="submitComment()">提交评论</button>
 
     </form>
-  </div>
-{% endif %}
+  {% endif %}
+</div>

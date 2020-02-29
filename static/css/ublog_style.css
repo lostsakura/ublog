@@ -174,6 +174,26 @@ ul.u-widget-list > li {
     margin: 15px 0 30px;
 }
 
+.u-article-tools {
+    padding: 30px 0 0;
+    text-align: right;
+}
+
+.u-like-btn {
+    margin: 0 20px;
+    font-size: .8em;
+    cursor: pointer;
+}
+
+.u-like-btn > a {
+    display: inline-block;
+    text-decoration: none;color: #5A5C6C;
+}
+
+.u-like-btn > a:hover {
+    color: #000000;
+}
+
 /* 文章样式end */
 
 
@@ -181,6 +201,22 @@ ul.u-widget-list > li {
 .u-comment {
     border-top: 1px solid #dddddd;
     padding: 15px 0;
+}
+.u-passed-comments {
+    padding-bottom: 15px;
+}
+
+.u-passed-comments-item {
+    margin: 10px 0;
+    background-color: #f3f3f3;
+    padding: 10px 10px;
+}
+
+.u-passed-comments-desc {
+    display: block;
+    text-align: right;
+    font-size: 12px;
+    color: #444444;
 }
 
 .u-comment-title {
@@ -211,7 +247,6 @@ ul.u-widget-list > li {
     font-size: .9em;
     width: 100%;
     resize: vertical;
-
 }
 
 textarea {
@@ -263,7 +298,7 @@ textarea {
     margin: 30px 0;
 }
 
-.u-page--desc {
+.u-page-desc {
     display: block;
     margin: 10px 0;
     color: #5A5C6C;

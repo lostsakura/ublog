@@ -33,6 +33,36 @@ function parentTagActive(tag) {
     $("#" + tag, parent.document).addClass('active');
 }
 
+// 喜欢文章
+$('.u-like-btn').click(() => {
+    $('.u-like-btn>a>i').css('color','red');
+    // like-this
+    let like_article_id = $('.u-article-id').text();
+    $.post('/like-this/',{
+        likeArticleId: like_article_id
+    },(data) => {
+        if (data['status'] === 'success') {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: data['info'],
+                    timer: 2000,
+                    showConfirmButton: false,
+                });
+            } else if (data['status'] === 'error') {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: data['info'],
+                    timer: 1600,
+                    showConfirmButton: false,
+                });
+            }
+    });
+});
+
 
 // 提交评论
 function submitComment() {

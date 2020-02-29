@@ -4,13 +4,13 @@ from datetime import datetime
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password
 from django.core.paginator import Paginator
+from django.db.models import Sum
 from django.http import JsonResponse
-from django.shortcuts import render, redirect, render_to_response
+from django.shortcuts import render, render_to_response
 
 from blog.forms import BlogStartForm, EmailForm, LoginForm, RecoverPasswordForm, ManageLabelsForm, DeleteResourceForm, \
     ArticleWriteForm, PageWriteForm, UserSettingsForm, SystemSettingsForm, SubmitCommentForm, BatchUpdateResourceForm
 from blog.tools import send_verify_email, verify_email, get_blog_settings, zero_transition, batch_delete
-
 from blog.models import BlogSettings, BlogUser, BlogLabel, BlogArticle, BlogPage, ArticleComment
 
 
@@ -58,7 +58,6 @@ def blog_start(request):
                 request.session.set_expiry(0)
             return JsonResponse(resp)
         else:
-            print(blog_start_form.errors)
             resp['status'] = 'error'
             resp['info'] = '验证没有通过'
             return JsonResponse(resp)
@@ -107,7 +106,6 @@ def blog_list(request, category='page', lid=1, page_num=1):
     # 分页处理
     table_list = Paginator(ba_list, 7)
     total_page = table_list.num_pages
-
     return render(request, 'blog_list.html', {'blog_setting': bs,
                                               'user_setting': us,
                                               'label_list': bl,
@@ -132,13 +130,35 @@ def blog_article(request, article_id):
     ba.save()
     bp = BlogPage.objects.filter(is_draft=False).order_by('sort_id')
     recent_article = BlogArticle.objects.filter(is_draft=False, is_private=False).order_by('-created_time')[:5]
+    # 所有评论
+    ac_list = ArticleComment.objects.filter(article=ba, is_passed=True).order_by('-id')
+    # 所有评论个数
+    ac_list_count = ac_list.count()
     return render(request, 'blog_article.html', {'blog_setting': bs,
                                                  'user_setting': us,
                                                  'label_list': bl,
                                                  'blog_page': bp,
                                                  'blog_article': ba,
                                                  'recent_article': recent_article,
-                                                 'total_page': 1})
+                                                 'total_page': 1,
+                                                 'ac_list': ac_list,
+                                                 'ac_list_count': ac_list_count})
+
+
+# 喜欢这个文章
+def blog_like(request):
+    resp = {'status': 'error', 'info': '出现了一些错误~'}
+    if request.method == 'POST':
+        try:
+            ba = BlogArticle.objects.get(id=int(request.POST['likeArticleId']))
+        except Exception as e:
+            ba = None
+        if ba is not None:
+            ba.likes = ba.likes + 1
+            ba.save()
+            resp['status'] = 'success'
+            resp['info'] = '谢谢您的赞赏！'
+    return JsonResponse(resp)
 
 
 # 独立页面
@@ -290,13 +310,16 @@ def admin_index(request):
     recent_articles_list = BlogArticle.objects.filter(is_draft=False).order_by('created_time')[:7]
     recent_comments_list = ArticleComment.objects.filter(is_passed=False).order_by('-id')[:7]
     recent_comment_count = ArticleComment.objects.filter(is_passed=False).count()
+    # 统计所有文章的赞
+    all_article_likes_count = BlogArticle.objects.aggregate(Sum('likes'))
     return render(request, 'admin_index.html', {'section_title': section_title,
                                                 'article_count': article_count,
                                                 'draft_count': draft_count,
                                                 'all_comment_count': all_comment_count,
                                                 'recent_comment_count': recent_comment_count,
                                                 'recent_articles_list': recent_articles_list,
-                                                'recent_comments_list': recent_comments_list})
+                                                'recent_comments_list': recent_comments_list,
+                                                'all_article_likes_count': all_article_likes_count})
 
 
 # 文章编辑
@@ -535,7 +558,6 @@ def manage_labels(request):
             return JsonResponse(resp)
         resp['status'] = 'error'
         resp['info'] = '您输入的信息不合法，请重试'
-        print(mlf.errors)
         return JsonResponse(resp)
 
 
@@ -637,7 +659,6 @@ def updateResource(request):
         burf = BatchUpdateResourceForm(request.POST)
         if burf.is_valid():
             bur_list = json.loads(request.POST['resourceId'])
-            print(bur_list)
             rt = request.POST['resourceType']
             rp = request.POST['resourceParameter']
             if bur_list is not None:

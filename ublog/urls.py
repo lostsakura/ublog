@@ -33,6 +33,8 @@ urlpatterns = [
     re_path('(?P<category>page)/(?P<page_num>[1-9][0-9]*)/', v.blog_list),
     # 博客文章详情页面
     re_path('article/(?P<article_id>[1-9][0-9]*)/', v.blog_article),
+    # 喜欢这个文章
+    path('like-this/', v.blog_like),
     # 博客独立页面
     re_path('(?P<page_id>[1-9][0-9]*)/', v.blog_page),
     # 提交评论
