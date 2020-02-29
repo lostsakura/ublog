@@ -85,7 +85,7 @@ DATABASES = {
         'NAME': 'ublog',
         'USER': 'root',
         'PASSWORD': 'qq282465134',
-        'HOST': 'leavemails.com',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
     }
 }
@@ -144,12 +144,12 @@ handler503 = 'main_site.views.service_unavailable'
 STATIC_URL = '/static/'
 
 # 开发环境下使用
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static')
+# ]
 
 # 生产环境下使用
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 # 媒体文件
 MEDIA_URL = '/media/'
