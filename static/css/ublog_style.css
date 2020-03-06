@@ -315,5 +315,17 @@ textarea {
     color: #5A5C6C;
     font-size: 14px;
 }
+.u-footer > span {
+      font-size: small;
+      color: #5e5e5e;
+      display: inline-block;
+    }
+    .u-footer > span > a {
+      color: #5e5e5e;
+      text-decoration: none;
+    }
+    .u-footer > span > a:hover {
+      color: #3d3d3d;
+    }
 
 /* 页脚样式end */
